@@ -1,12 +1,12 @@
 1. 게임의 소개
 
-   - 제목 : <strong>아타호</strong> 
+   제목 : <strong>아타호</strong> 
 
-   - <ul>원게임제목 : 환세취호전</ul>
-     <ul>"컴파일"에서 만든 게임 , RPG장르</ul>
-     <ul>1997년에 출시한 고전 게임이다.</ul>
+   <ul>원게임제목 : 환세취호전</ul>
+   <ul>"컴파일"에서 만든 게임 , RPG장르</ul>
+   <ul>1997년에 출시한 고전 게임이다.</ul>
 
-      ![0](RM_img\0.JPG)![1](RM_img\1.JPG)![1](RM_img\2.JPG)
+    <img src="https://user-images.githubusercontent.com/65538479/94275262-b3c33400-ff81-11ea-9c03-5aeb6875cbda.JPG" alt="0" style="zoom:60%;" /><img src="https://user-images.githubusercontent.com/65538479/94275355-d2c1c600-ff81-11ea-8b83-ab04a294536e.JPG" alt="1" style="zoom:60%;" /><img src="https://user-images.githubusercontent.com/65538479/94275400-dfdeb500-ff81-11ea-9b75-a94086f8fc92.JPG" alt="2" style="zoom:60%;" />
 
    ---
 
@@ -24,11 +24,9 @@
 
 3. GameState 설명
 
-   - 
+   <img src="https://user-images.githubusercontent.com/65538479/94275454-f08f2b00-ff81-11ea-8608-0124b998dc21.JPG" alt="설명"  />
 
-     ![3](RM_img\설명.JPG)
-
-     타이틀에서 엔터를 입력하면 새로시작 하거나 저장된 지점부터 이어서 할 수 있다.
+   - 타이틀에서 엔터를 입력하면 새로시작 하거나 저장된 지점부터 이어서 할 수 있다.
 
      게임을 시작하면  마을에서 시작한다. 마을에는 저장을 위한 **세이브 오브젝트**, **NPC (상인)**이 표시된다.
 
