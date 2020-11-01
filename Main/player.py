@@ -29,7 +29,7 @@ class Player:
         self.action = 2
         self.mag = 1
         self.lvl = 1
-        self.curHp = 30
+        self.curHp =15
         self.curMp = 30
         self.curExp = 0
         self.maxHp = 30
@@ -38,7 +38,7 @@ class Player:
         self.atk = 22
         self.df = 17
         self.act = 20
-        self.name = "아타호"
+        self.name = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
         if gfw.world.count_at(gfw.layer.objt) > 0:
             self.map_obj = gfw.world.object(gfw.layer.objt, 0)
 
