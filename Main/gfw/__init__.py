@@ -1,24 +1,16 @@
+# version 2020-0927
 import time
 from pico2d import *
+import random
+import gfw.world
+import gfw.image
+import gfw.font
 
 running = True
 stack = None
 frame_interval = 0.01
 delta_time = 0
 
-objects = []
-trashcan = []
-
-def init(layer_names):
-    global objects
-    objects = []
-    gfw.layer = lambda: None
-    layerIndex = 0
-    for name in layer_names:
-        objects.append([])
-        gfw.layer.__dict__[name] = layerIndex
-        layerIndex += 1
-        
 def quit():
     global running
     running = False
@@ -28,24 +20,23 @@ def run(start_state):
     running = True
     stack = [start_state]
 
-    w ,h = 640,480
-
-    if hasattr(start_state, 'canvas_width'): w = start_state.canvas_width 
+    w,h = 640,480
+    if hasattr(start_state, 'canvas_width'): w = start_state.canvas_width
     if hasattr(start_state, 'canvas_height'): h = start_state.canvas_height
 
-    open_canvas(w = w, h = h)
+    open_canvas(w=w, h=h)
 
     start_state.enter()
 
     global delta_time
-    last_time = time.time() #시작시간 기록
+    last_time = time.time()
     while running:
-        
-        now = time.time() #현재시간 계속 기록
-        delta_time = now - last_time #지속시간 저장
-        last_time = now # 초기화
+        # inter-frame (delta) time
+        now = time.time()
+        delta_time = now - last_time
+        last_time = now
 
-        # 이벤트 관리
+        # event handling
         evts = get_events()
         for e in evts:
             stack[-1].handle_event(e)
@@ -55,7 +46,7 @@ def run(start_state):
 
         # game rendering
         clear_canvas()
-        stack[-1].draw() #맨위에 있는거 (-1)
+        stack[-1].draw()
         update_canvas()
 
         delay(frame_interval)
@@ -70,7 +61,7 @@ def change(state):
     global stack
     if (len(stack) > 0):
         stack.pop().exit()
-    stack.append(state) #리스트에 스테이트 추가
+    stack.append(state)
     state.enter()
 
 def push(state):

@@ -4,7 +4,7 @@ import title_state
 
 def enter():
     global image, elapsed
-    image = load_image('../res/kpu_credit.png')
+    image = load_image('./res/kpu_credit.png')
     elapsed = 0
 
 def update():

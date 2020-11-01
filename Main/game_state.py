@@ -1,66 +1,60 @@
 import gfw
 from pico2d import *
-from title_state import *
+from gobj import *
 from player import Player
-canvas_width = 640 
-canvas_height = 480
-
+from background import FixedBackground
+from map_obj import JsonObject
 
 def enter():
-    global image, bgm
-    image = load_image('../res/Map0.png')
-    #bgm = load_music('../res/bgm/villiage.MID')
-    #bgm.set_volume(50)
-    #bgm.repeat_play()
+    gfw.world.init(['bg','objt', 'player', 'frame', 'status'])
+
+    center = get_canvas_width() // 2, get_canvas_height() // 2
+    bg = FixedBackground('Map0.png',0)
+    gfw.world.add(gfw.layer.bg, bg)
+
+    frame = FixedBackground('frame.png',1)
+    gfw.world.add(gfw.layer.frame, frame)
+
+
+    objt = JsonObject()
+    gfw.world.add(gfw.layer.objt, objt)
+
+    status = FixedBackground('statusui.png',2)
+    status.tp = 2
+    gfw.world.add(gfw.layer.status, status)
 
     global player
     player = Player()
-    player.pos = (320,80)
+    player.pos = bg.center
+    player.bg = bg
+    bg.target = player
+    gfw.world.add(gfw.layer.player, player)
 
 
 def update():
-    player.update()
-    pass
+    gfw.world.update()
 
 def draw():
-    global image
-
-    
-
-    x,y = (player.pos[0]*2, player.pos[1]*2)
-   
-   
-
-    if x < 0 :
-        x = 0 
-    elif x > 640 :
-        x = 640
-    if y < 0 :
-        y = 0
-    elif y > 480 :
-        y = 480
-
-    #print(x,y) 
-    image.clip_draw(int(x),int(y),640,480,canvas_width//2,canvas_height//2)
-    player.draw()
+    gfw.world.draw()
+    # gobj.draw_collision_box()
 
 def handle_event(e):
+    # prev_dx = boy.dx
     if e.type == SDL_QUIT:
         gfw.quit()
-    elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-        gfw.quit()
-    elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push(game_state)
+        return
+    elif e.type == SDL_KEYDOWN:
+        if e.key == SDLK_ESCAPE:
+            gfw.pop()
+            return
+
     if player.handle_event(e):
         return
-def exit():
-    global image,bgm
-    del image,bgm
 
-def pause():
+def exit():
     pass
-def resume():
-    pass
-    
+
+
+
 if __name__ == '__main__':
     gfw.run_main()

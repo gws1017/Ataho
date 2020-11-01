@@ -7,7 +7,7 @@ canvas_height = 480
 
 def enter():
    global image, bgm
-   image = load_image('../res/title.png')
+   image = load_image('./res/title.png')
    #bgm = load_music('../res/bgm/main.MID')
    #bgm.set_volume(50)
    #bgm.repeat_play()
@@ -29,8 +29,8 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
         gfw.push(game_state)
 def exit():
-    global image, bgm
-    del bgm
+    global image
+    
     del image
 
 def pause():
