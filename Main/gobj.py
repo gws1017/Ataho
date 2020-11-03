@@ -18,15 +18,13 @@ def point_add(point1, point2):
 def move_obj(obj):
     obj.pos = point_add(obj.pos, obj.delta)
 
-def collides_box(a, b,tpe):
+def collides_box(a, b):
     (la, ba, ra, ta) = a.get_bb()
     
-    if tpe == 0 :
-        for i in range(b.count) :
-            (lb, bb, rb, tb) = b.get_bb(i)
 
-    else :
-        (lb, bb, rb, tb) = b.get_bb()
+
+  
+    (lb, bb, rb, tb) = b.get_bb()
     print((la, ba, ra, ta),(lb, bb, rb, tb))
 
 

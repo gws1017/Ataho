@@ -3,12 +3,11 @@ from pico2d import *
 from gobj import *
 from player import Player
 from background import FixedBackground
-from map_obj import JsonObject
 from number import Number
 import life_gauge
 
 def enter():
-    gfw.world.init(['bg','objt', 'player', 'frame', 'status'])
+    gfw.world.init(['bg','player', 'frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
     bg = FixedBackground('Map0.png',0)
@@ -16,10 +15,6 @@ def enter():
 
     frame = FixedBackground('frame.png',1)
     gfw.world.add(gfw.layer.frame, frame)
-
-
-    objt = JsonObject()
-    gfw.world.add(gfw.layer.objt, objt)
 
     status = FixedBackground('statusui.png',2)
     status.tp = 2
@@ -56,6 +51,7 @@ def draw():
     life_gauge.draw(370,84,player.curExp / player.maxExp)
     number_w.draw(408,98,player.curExp,0.65)
     number_w.draw(465,98,player.maxExp,0.65)
+    draw_collision_box()
     # gobj.draw_collision_box()
 
 def handle_event(e):
