@@ -40,6 +40,9 @@ class Player:
         self.act = 20
         self.name = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
 
+        if gfw.world.count_at(gfw.layer.mobj) > 0:
+            self.map_obj = gfw.world.object(gfw.layer.mobj, 0)
+
         global center_x, center_y
         center_x = get_canvas_width() // 2
         center_y = get_canvas_height() // 2
@@ -83,11 +86,11 @@ class Player:
         
         x,y = self.pos
         tx,ty = self.pos
+        px,py = self.pos
         dx,dy = self.delta
         x += dx * self.speed * self.mag * gfw.delta_time
         y += dy * self.speed * self.mag * gfw.delta_time
 
-        px,py = x,y
         bg_l, bg_b, bg_r, bg_t = self.bg.get_boundary()
         #print(self.bg.get_boundary())
         x = clamp(bg_l, x, bg_r)
@@ -109,8 +112,14 @@ class Player:
             self.delta = 0, 0
             self.action = 2 if dx < 0 else 3
 
-        #print("x :",x, "y :",y)
+        
+        
+        
         self.pos = x,y
+        collides = gobj.collides_box(self,self.map_obj,0)
+        print(collides)
+        if collides:
+            self.pos = px,py
 
         # self.bg.pos = 2 * center_x - x, 2 * center_y - y
 
@@ -142,7 +151,7 @@ class Player:
         hw = 24
         hh = 32
         x,y = self.bg.to_screen(self.pos)
-        return x - hw, y - hh, x + hw, y + hh
+        return x -hw//2, y-hh, x + hw//2, y-hh//2
 
     def __getstate__(self):
         dict = self.__dict__.copy()

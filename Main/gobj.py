@@ -18,14 +18,25 @@ def point_add(point1, point2):
 def move_obj(obj):
     obj.pos = point_add(obj.pos, obj.delta)
 
-def collides_box(a, b):
+def collides_box(a, b,tpe):
     (la, ba, ra, ta) = a.get_bb()
     
 
+    if tpe == 0 :
+        for i in range(b.mcount) :
+            (lb, bb, rb, tb) = b.get_bb(i)
+            #print((la, ba, ra, ta),(lb, bb, rb, tb),la > rb,ra < lb,ba > tb,ta < bb)
+            if la > rb: continue
+            if ra < lb: continue
+            if ba > tb: continue
+            if ta < bb: continue
 
+            return True
+
+    else :
+        (lb, bb, rb, tb) = b.get_bb()
   
-    (lb, bb, rb, tb) = b.get_bb()
-    print((la, ba, ra, ta),(lb, bb, rb, tb))
+    #print((la, ba, ra, ta),(lb, bb, rb, tb))
 
 
     if la > rb: return False
@@ -44,9 +55,14 @@ def distance(point1, point2):
 	math.sqrt(distance_sq(point1, point2))
 	
 def draw_collision_box():
-	for obj in gfw.world.all_objects():
-		if hasattr(obj, 'get_bb'):
-			draw_rectangle(*obj.get_bb())
+   
+    for obj in gfw.world.all_objects():
+        if hasattr(obj, 'get_bb'):
+            if(hasattr(obj, 'mcount')):
+                for i in range(obj.mcount):
+                    draw_rectangle(*obj.get_bb(i))
+            else:
+                draw_rectangle(*obj.get_bb())
 
 def mouse_xy(event):
     return event.x, get_canvas_height() - event.y - 1

@@ -4,10 +4,11 @@ from gobj import *
 from player import Player
 from background import FixedBackground
 from number import Number
+from map_obj import MapObject
 import life_gauge
 
 def enter():
-    gfw.world.init(['bg','player', 'frame', 'status'])
+    gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
     bg = FixedBackground('Map0.png',0)
@@ -19,6 +20,10 @@ def enter():
     status = FixedBackground('statusui.png',2)
     status.tp = 2
     gfw.world.add(gfw.layer.status, status)
+
+    mobj = MapObject()
+    mobj.bg =bg
+    gfw.world.add(gfw.layer.mobj,mobj)
 
     global number_w
     number_w = Number(3)
