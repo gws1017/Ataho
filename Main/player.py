@@ -114,12 +114,15 @@ class Player:
 
         
         
+        global t1 ,t2
+        t1,t2 = 1,1
         
         self.pos = x,y
         collides = gobj.collides_box(self,self.map_obj,0)
         print(collides)
         if collides:
             self.pos = px,py
+
 
         # self.bg.pos = 2 * center_x - x, 2 * center_y - y
 
@@ -137,8 +140,8 @@ class Player:
                 self.delta = 0, 0
             pdx = self.delta[0]
             self.delta = gobj.point_add(self.delta, Player.KEY_MAP[pair])
-            dx = self.delta[0]
-            dy = self.delta[1]
+            dx = t1*self.delta[0]
+            dy = t2*self.delta[1]
 
             pd = self.action
             self.action = \

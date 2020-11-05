@@ -11,7 +11,7 @@ def enter():
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
-    bg = FixedBackground('Map0.png',0)
+    bg = FixedBackground('Map1.png',0)
     gfw.world.add(gfw.layer.bg, bg)
 
     frame = FixedBackground('frame.png',1)
@@ -21,7 +21,7 @@ def enter():
     status.tp = 2
     gfw.world.add(gfw.layer.status, status)
 
-    mobj = MapObject()
+    mobj = MapObject(1)
     mobj.bg =bg
     gfw.world.add(gfw.layer.mobj,mobj)
 
@@ -34,6 +34,11 @@ def enter():
     player.bg = bg
     bg.target = player
     gfw.world.add(gfw.layer.player, player)
+
+    global bgm
+    bgm = load_music('./res/bgm/field.MID')
+    bgm.set_volume(50)
+    bgm.repeat_play()
 
     #global nm
     #nm = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)

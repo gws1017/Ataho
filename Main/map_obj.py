@@ -6,14 +6,15 @@ from gobj import *
 
 
 class MapObject():
-    def __init__(self):
+    def __init__(self,num):
         self.mcount = 0
         self.x = []
         self.y = []
         self.width = []
-        with open (res("object0.json")) as json_file:
+        self.name
+        with open (res("object%d.json" % num)) as json_file:
             json_data = json.load(json_file)
-            self.tile_list = json_data["data"]
+            self.tile_list = json_data["layers"][0]["data"]
             for i in range(len(self.tile_list)) :       
                 if(self.tile_list[i] != 0):
                     self.x.append( ( ( i + 1) % 80 ) * 16 - 16) 

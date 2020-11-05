@@ -1,6 +1,6 @@
 import gfw
 from pico2d import *
-import game_state
+import villiage_state
 
 canvas_width = 640
 canvas_height = 480
@@ -8,9 +8,9 @@ canvas_height = 480
 def enter():
    global image, bgm
    image = load_image('./res/title.png')
-   #bgm = load_music('../res/bgm/main.MID')
-   #bgm.set_volume(50)
-   #bgm.repeat_play()
+   bgm = load_music('./res/bgm/main.MID')
+   bgm.set_volume(50)
+   bgm.repeat_play()
 
 
 def update():
@@ -27,7 +27,7 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push(game_state)
+        gfw.push(villiage_state)
 def exit():
     global image
     
