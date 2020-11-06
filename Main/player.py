@@ -3,6 +3,8 @@ from pico2d import *
 import gfw
 import gobj
 from random import randint
+
+
 class Player:
     KEY_MAP = {
         (SDL_KEYDOWN, SDLK_LEFT):  (-1,  0),
@@ -20,6 +22,7 @@ class Player:
     #constructor
     def __init__(self):
         self.pos = get_canvas_width() // 2, get_canvas_height() // 2
+        self.battle = 0
         self.delta = 0, 0
         self.target = None
         self.speed = 200
@@ -39,9 +42,7 @@ class Player:
         self.df = 17
         self.act = 20
         self.name = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
-
-        if gfw.world.count_at(gfw.layer.mobj) > 0:
-            self.map_obj = gfw.world.object(gfw.layer.mobj, 0)
+            
 
         global center_x, center_y
         center_x = get_canvas_width() // 2
@@ -69,9 +70,14 @@ class Player:
         pos = self.bg.to_screen(self.pos)
         self.image.clip_draw(sx, sy, width, 64, *pos)
 
-    def update(self):
-        
-        if(self.curExp == 100):
+    def update(self):       
+        if hasattr(self,'wcount'):
+            if self.wcount > self.wmax :
+                self.wcount = 0
+                import battle_state
+                gfw.push(battle_state)
+
+        if self.curExp == 100 :
             self.maxHp +=  randint(2,5)
             self.maxMp +=  randint(2,5)
             self.atk += randint(2,5)
@@ -114,15 +120,15 @@ class Player:
 
         
         
-        global t1 ,t2
-        t1,t2 = 1,1
-        
-        self.pos = x,y
-        collides = gobj.collides_box(self,self.map_obj,0)
-        print(collides)
-        if collides:
-            self.pos = px,py
+    
 
+        if self.battle == 0 :  
+            self.pos = x,y
+            if hasattr(self,'map_obj'):
+                collides = gobj.collides_box(self,self.map_obj,0)
+                if collides:
+                    self.pos = px,py
+ 
 
         # self.bg.pos = 2 * center_x - x, 2 * center_y - y
 
@@ -135,20 +141,27 @@ class Player:
     def handle_event(self, e):
         pair = (e.type, e.key)
         if pair in Player.KEY_MAP:
-            if self.target is not None:
-                self.target = None
-                self.delta = 0, 0
-            pdx = self.delta[0]
-            self.delta = gobj.point_add(self.delta, Player.KEY_MAP[pair])
-            dx = t1*self.delta[0]
-            dy = t2*self.delta[1]
+            if self.battle == 1 :
+                return
+            else:
+                if(hasattr(self,'wcount')):
+                    self.wcount += 1
+                    print(self.wcount)
+                if self.target is not None:
+                    self.target = None
+                    self.delta = 0, 0
+                pdx = self.delta[0]
+                self.delta = gobj.point_add(self.delta, Player.KEY_MAP[pair])
+                dx = self.delta[0]
+                dy = self.delta[1]
 
-            pd = self.action
-            self.action = \
-                3 if dy < 0 else \
-                2 if dy > 0 else \
-                1 if dx < 0 else \
-                0 if dx > 0 else pd
+                pd = self.action
+
+                self.action = \
+                    3 if dy < 0 else \
+                    2 if dy > 0 else \
+                    1 if dx < 0 else \
+                    0 if dx > 0 else pd
 
     def get_bb(self):
         hw = 24

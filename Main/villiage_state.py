@@ -7,6 +7,7 @@ from number import Number
 from map_obj import MapObject
 import life_gauge
 
+
 def enter():
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
@@ -33,6 +34,8 @@ def enter():
     player = Player()
     player.pos = bg.center
     player.bg = bg
+    if gfw.world.count_at(gfw.layer.mobj) > 0:
+        player.map_obj = gfw.world.object(gfw.layer.mobj, 0)
     bg.target = player
     gfw.world.add(gfw.layer.player, player)
 
@@ -78,7 +81,8 @@ def handle_event(e):
 
     if player.handle_event(e):
         return
-
+def pause():
+    pass
 def exit():
     pass
 

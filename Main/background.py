@@ -189,27 +189,40 @@ class HorzScrollBackground:
     def get_boundary(self):
         return (-sys.maxsize, -sys.maxsize, sys.maxsize, sys.maxsize)
 
-    #     self.image.clip_draw_to_origin(*self.src_rect_1, *self.dst_rect_1)
-    #     self.image.clip_draw_to_origin(*self.src_rect_2, *self.dst_rect_2)
+class Battleground:
+    def __init__(self, imageName,tp):
+        self.imageName = imageName
+        self.image = gfw.image.load(res(imageName))
+        self.target = None
+        self.cw, self.ch = 640, 480
+        self.win_rect = 304, 176, self.cw, self.ch
+        self.tp = tp
+        self.center = self.image.w // 2, self.image.h // 2
+        hw, hh = self.cw // 2, self.ch // 2
+        self.boundary = hw, hh, self.image.w - hw, self.image.h - hh
+        
 
-    # private void drawHorizontal(Canvas canvas) {
-    #     int left = 0;
-    #     int top = 0;
-    #     int right = UiBridge.metrics.size.x;
-    #     int bottom = UiBridge.metrics.size.y;
-    #     int pageSize = sbmp.getWidth() * (bottom - top) / sbmp.getHeight();
+    def set_target(self, target):
+        self.target = target
+        self.update()
+    def draw(self):
+        self.image.clip_draw_to_origin(*self.win_rect, 0, 0)
+        print(self.win_rect)
+      
+    def update(self):
+        pass
+        #
 
-    #     canvas.save();
-    #     canvas.clipRect(left, top, right, bottom);
+    def get_boundary(self):
+        return self.boundary
+    def translate(self, point):
+        x, y = point
+        l, b, r, t = self.win_rect
+        return l + x, b + y
+    def to_screen(self, point):
+        # return self.cw // 2, self.ch // 2
+        x, y = point
+        l, b, r, t = self.win_rect
+        return x - l, y - b
 
-    #     float curr = scrollX % pageSize;
-    #     if (curr > 0) curr -= pageSize;
-    #     curr += left;
-    #     while (curr < right) {
-    #         dstRect.set(curr, top, curr + pageSize, bottom);
-    #         curr += pageSize;
-    #         canvas.drawBitmap(sbmp.getBitmap(), srcRect, dstRect, null);
-    #     }
-    #     canvas.restore();
-    # }
 

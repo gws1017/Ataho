@@ -58,7 +58,7 @@ def draw_collision_box():
    
     for obj in gfw.world.all_objects():
         if hasattr(obj, 'get_bb'):
-            if(hasattr(obj, 'mcount')):
+            if hasattr(obj, 'mcount'):
                 for i in range(obj.mcount):
                     draw_rectangle(*obj.get_bb(i))
             else:
