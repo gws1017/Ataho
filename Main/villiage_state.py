@@ -21,6 +21,7 @@ def enter():
     status.tp = 2
     gfw.world.add(gfw.layer.status, status)
 
+    global mobj
     mobj = MapObject(0)
     mobj.bg =bg
     gfw.world.add(gfw.layer.mobj,mobj)
@@ -52,6 +53,7 @@ def update():
 def draw():
     gfw.world.draw()
     player.name.draw(40,87,'아타호',(255,255,255))
+    mobj.name.draw(528,87,'마을',(255,255,255))
     life_gauge.draw(174,84,player.curHp / player.maxHp)
     number_w.draw(212,98,player.curHp,0.65)
     number_w.draw(262,98,player.maxHp,0.65)

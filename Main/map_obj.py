@@ -11,7 +11,7 @@ class MapObject():
         self.x = []
         self.y = []
         self.width = []
-        self.name
+        self.name = gfw.font.load(RES_DIR + '/neodgm.ttf', 23)
         with open (res("object%d.json" % num)) as json_file:
             json_data = json.load(json_file)
             self.tile_list = json_data["layers"][0]["data"]
