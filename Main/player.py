@@ -146,7 +146,7 @@ class Player:
             else:
                 if(hasattr(self,'wcount')):
                     self.wcount += 1
-                    print(self.wcount)
+                    #print(self.wcount)
                 if self.target is not None:
                     self.target = None
                     self.delta = 0, 0

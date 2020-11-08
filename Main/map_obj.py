@@ -21,7 +21,6 @@ class MapObject():
                     self.y.append( ( 59 - ( ( i + 1 ) // 80 ) ) * 16  + 128)
                     self.mcount += 1
                 
-        #print(self.mcount,self.x) # 59 - i
         
         self.delay = 0
     def update(self):

@@ -207,7 +207,6 @@ class Battleground:
         self.update()
     def draw(self):
         self.image.clip_draw_to_origin(*self.win_rect, 0, 0)
-        print(self.win_rect)
       
     def update(self):
         pass

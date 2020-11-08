@@ -7,11 +7,12 @@ from background import FixedBackground
 from number import Number
 from map_obj import MapObject
 from random import randint
+from battle_manage import BattleManager
 import life_gauge
 import gobj
 
 def enter():
-    gfw.world.init(['bg','player', 'frame', 'status'])
+    gfw.world.init(['bg','player', 'frame','bm', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
     bg = Battleground('battle0.png',0)
@@ -23,6 +24,10 @@ def enter():
     status = FixedBackground('statusui.png',2)
     status.tp = 2
     gfw.world.add(gfw.layer.status, status)
+
+    global bm
+    bm = BattleManager()
+    gfw.world.add(gfw.layer.bm,bm)
 
     global number_w
     number_w = Number(3)
@@ -36,6 +41,8 @@ def enter():
     player.bg = bg
     bg.target = player
     gfw.world.add(gfw.layer.player, player)
+    
+    
 
     global bgm
     bgm = load_music('./res/bgm/battle0.MID')
@@ -63,7 +70,6 @@ def draw():
     life_gauge.draw(370,84,player.curExp / player.maxExp)
     number_w.draw(408,98,player.curExp,0.65)
     number_w.draw(465,98,player.maxExp,0.65)
-    draw_collision_box()
     # gobj.draw_collision_box()
 
 def handle_event(e):
@@ -76,7 +82,7 @@ def handle_event(e):
             gfw.pop()
             return
 
-    if player.handle_event(e):
+    if bm.handle_event(e):
         return
 def pause():
     pass
