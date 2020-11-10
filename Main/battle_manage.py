@@ -13,6 +13,7 @@ class BattleManager:
         self.pos = 200,128
         self.spos = 217 + self.select1.w // 2,409 - self.select1.h
         self.stidx = 0
+        self.sname = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
 
 
     def draw(self):
@@ -22,6 +23,7 @@ class BattleManager:
 
         if self.stidx == 0:
             self.slist[0][0].clip_draw_to_origin(0, 0,31,31, 225,313)
+            self.sname.draw(256,313,'정권'(255,255,255))
         elif self.stidx == 1:
             for i in range(2):
                 self.slist[0][0].clip_draw_to_origin(0, 0,31,31, 225,313 - i *32)
