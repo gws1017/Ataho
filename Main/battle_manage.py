@@ -1,6 +1,7 @@
 import gfw
 import gobj
 from pico2d import *
+from bplayer import Player
 
 class BattleManager:
     def __init__(self):
@@ -16,12 +17,15 @@ class BattleManager:
         self.spos = 217 + self.select1.w // 2,409 - self.select1.h
         self.spos2 = 225 - self.select2.w ,336 - self.select1.h
         self.stidx = 0
+        self.sname = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
+        self.player = Player()
         self.st2idx = 0
         self.sname = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
         self.DRAW = True
 
 
     def draw(self):
+        self.player.draw()
         if self.DRAW :
             self.image.clip_draw_to_origin(0, 0,223,352, *self.pos)
             pos1 = self.pos[0]+17, self.pos[1]
@@ -46,9 +50,11 @@ class BattleManager:
             pass
 
     def update(self):
+
+        
+        x,y = self.spos
         x = self.spos[0]
         y = self.spos2[1]
-
         if self.stidx == 4:
             self.stidx = 0
         elif self.stidx == -1:
@@ -77,8 +83,10 @@ class BattleManager:
 
         self.spos = x, self.spos[1]
         self.spos2 =  self.spos2[0], y
+        self.DRAW = self.player.update()
 
     def handle_event(self, e):
+        self.player.handle_event(e)
         if e.type == SDL_KEYDOWN :
             self.stidx += \
                     -1 if e.key == SDLK_LEFT else \

@@ -12,7 +12,7 @@ import life_gauge
 import gobj
 
 def enter():
-    gfw.world.init(['bg','player', 'frame','bm', 'status'])
+    gfw.world.init(['bg', 'frame','bm', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
     bg = Battleground('battle0.png',0)
@@ -30,26 +30,14 @@ def enter():
     gfw.world.add(gfw.layer.bm,bm)
 
     global number_w
-    number_w = Number(3)
-
-    global player
-    player = Player()
-    player.pos = 430,550
-    player.battle = 1
-    player.action = 2
-    player.image = gfw.image.load(gobj.res('at_btl.png'))
-    player.bg = bg
-    bg.target = player
-    gfw.world.add(gfw.layer.player, player)
-    
-    
+    number_w = Number(3)   
 
     global bgm
     bgm = load_music('./res/bgm/battle0.MID')
     bgm.set_volume(50)
     bgm.repeat_play()
 
-    #global nm
+    #global nm[self.fidx]
     #nm = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
 
     life_gauge.load()
@@ -59,17 +47,19 @@ def update():
     gfw.world.update()
 
 def draw():
+    p = bm.player
+    st = p.STATUS
     gfw.world.draw()
-    player.name.draw(40,87,'아타호',(255,255,255))
-    life_gauge.draw(174,84,player.curHp / player.maxHp)
-    number_w.draw(212,98,player.curHp,0.65)
-    number_w.draw(262,98,player.maxHp,0.65)
-    life_gauge.draw(272,84,player.curMp / player.maxMp)
-    number_w.draw(310,98,player.curMp,0.65)
-    number_w.draw(360,98,player.maxMp,0.65)
-    life_gauge.draw(370,84,player.curExp / player.maxExp)
-    number_w.draw(408,98,player.curExp,0.65)
-    number_w.draw(465,98,player.maxExp,0.65)
+    p.name.draw(40,87,'아타호',(255,255,255))
+    life_gauge.draw(174,84,st["curHp"] / st["maxHp"])
+    number_w.draw(212,98,st["curHp"],0.65)
+    number_w.draw(262,98,st["maxHp"],0.65)
+    life_gauge.draw(272,84,st["curMp"] / st["maxMp"])
+    number_w.draw(310,98,st["curMp"],0.65)
+    number_w.draw(360,98,st["maxMp"],0.65)
+    life_gauge.draw(370,84,st["curExp"] / st["maxExp"])
+    number_w.draw(408,98,st["curExp"],0.65)
+    number_w.draw(465,98,st["maxExp"],0.65)
     # gobj.draw_collision_box()
 
 def handle_event(e):
