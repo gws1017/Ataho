@@ -1,10 +1,11 @@
 import gfw
 import gobj
 from pico2d import *
-from bplayer import Player
+from bplayer import *
 
 class BattleManager:
     def __init__(self):
+        #배틀 UI
         self.image = gfw.image.load(gobj.res('skillwindow.png'))
         self.select1 = gfw.image.load(gobj.res('select1.png'))
         self.select2 = gfw.image.load(gobj.res('select2.png'))
@@ -16,12 +17,15 @@ class BattleManager:
         self.pos = 200,128
         self.spos = 217 + self.select1.w // 2,409 - self.select1.h
         self.spos2 = 225 - self.select2.w ,336 - self.select1.h
-        self.stidx = 0
-        self.sname = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
+        self.wav = load_wav('./res/bgm/'+ EFFECT_NAME[2] +'.wav')
+        self.DRAW = True
+        #플레이어 세팅 
         self.player = Player()
+        self.stidx = 0
         self.st2idx = 0
         self.sname = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
-        self.DRAW = True
+
+        
 
 
     def draw(self):
@@ -50,6 +54,9 @@ class BattleManager:
             pass
 
     def update(self):
+        if self.player.update() == -1 :
+            gfw.pop()
+            return
 
         
         x,y = self.spos
@@ -86,7 +93,6 @@ class BattleManager:
         self.DRAW = self.player.update()
 
     def handle_event(self, e):
-        self.player.handle_event(e)
         if e.type == SDL_KEYDOWN :
             self.stidx += \
                     -1 if e.key == SDLK_LEFT else \
@@ -95,10 +101,13 @@ class BattleManager:
                     -1 if e.key == SDLK_DOWN else \
                     1 if e.key == SDLK_UP else 0
             if e.key == SDLK_SPACE :
-                self.DRAW = False
-                return self.stidx,self.st2idx
-        return (-1,-1)
-
+                if self.stidx != 2:
+                    self.DRAW = False
+                    self.player.st,self.player.st2 = self.stidx,self.st2idx
+                else: 
+                    self.wav.play(1)
+                    return
+        self.player.handle_event(e)
                     
 
     def get_bb(self):

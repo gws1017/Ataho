@@ -12,7 +12,7 @@ import life_gauge
 import gobj
 
 def enter():
-    gfw.world.init(['bg', 'frame','bm', 'status'])
+    gfw.world.init(['bg', 'bm','frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
     bg = Battleground('battle0.png',0)
