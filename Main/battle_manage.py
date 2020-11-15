@@ -2,6 +2,7 @@ import gfw
 import gobj
 from pico2d import *
 from bplayer import *
+from enemy import *
 
 class BattleManager:
     def __init__(self):
@@ -21,15 +22,21 @@ class BattleManager:
         self.DRAW = True
         #플레이어 세팅 
         self.player = Player()
+        self.monster = Monster(0)
         self.stidx = 0
         self.st2idx = 0
         self.sname = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
+        self.player.monster = self.monster
+        self.monster.player = self.player
 
         
 
 
     def draw(self):
         self.player.draw()
+        self.monster.draw()
+        
+        
         if self.DRAW :
             self.image.clip_draw_to_origin(0, 0,223,352, *self.pos)
             pos1 = self.pos[0]+17, self.pos[1]
@@ -57,6 +64,10 @@ class BattleManager:
         if self.player.update() == -1 :
             gfw.pop()
             return
+
+        #서로 정보 갱신
+        self.player.monster = self.monster
+        self.monster.player = self.player
 
         
         x,y = self.spos
@@ -90,7 +101,15 @@ class BattleManager:
 
         self.spos = x, self.spos[1]
         self.spos2 =  self.spos2[0], y
-        self.DRAW = self.player.update()
+        
+        self.player.update()
+        if self.monster.update(self.DRAW) :
+            self.player.hit = 1
+            self.DRAW = True
+        if self.player.update() == -2 :
+            self.monster.set_state(IdleState)
+            self.DRAW = False
+            
 
     def handle_event(self, e):
         if e.type == SDL_KEYDOWN :
@@ -108,7 +127,7 @@ class BattleManager:
                     self.wav.play(1)
                     return
         self.player.handle_event(e)
-                    
+        self.monster.handle_event(e)           
 
     def get_bb(self):
     	pass

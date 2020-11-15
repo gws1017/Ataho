@@ -77,16 +77,7 @@ class Player:
                 import battle_state
                 gfw.push(battle_state)
 
-        if self.curExp == 100 :
-            self.maxHp +=  randint(2,5)
-            self.maxMp +=  randint(2,5)
-            self.atk += randint(2,5)
-            self.df += randint(2,5)
-            self.act += randint(2,5)
-            self.curExp = 0
-            self.curHp = self.maxHp
-            self.curMp = self.maxMp
-            self.lvl += 1
+        
 
 
         

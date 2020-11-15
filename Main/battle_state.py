@@ -1,7 +1,6 @@
 import gfw
 from pico2d import *
 from gobj import *
-from player import Player
 from background import Battleground
 from background import FixedBackground
 from number import Number
@@ -27,6 +26,7 @@ def enter():
 
     global bm
     bm = BattleManager()
+    bm.player.bgm2 = load_music('./res/bgm/victory.MID')
     gfw.world.add(gfw.layer.bm,bm)
 
     global number_w
@@ -36,9 +36,9 @@ def enter():
     bgm = load_music('./res/bgm/battle0.MID')
     bgm.set_volume(50)
     bgm.repeat_play()
-
-    #global nm[self.fidx]
-    #nm = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
+    
+    global ft
+    ft = gfw.font.load(RES_DIR + '/neodgm.ttf', 18)
 
     life_gauge.load()
 
@@ -48,9 +48,11 @@ def update():
 
 def draw():
     p = bm.player
+    m = bm.monster
     st = p.STATUS
+    st2 = m.STATUS
     gfw.world.draw()
-    p.name.draw(40,87,'아타호',(255,255,255))
+    ft.draw(40,87,p.name,(255,255,255))
     life_gauge.draw(174,84,st["curHp"] / st["maxHp"])
     number_w.draw(212,98,st["curHp"],0.65)
     number_w.draw(262,98,st["maxHp"],0.65)
@@ -60,7 +62,12 @@ def draw():
     life_gauge.draw(370,84,st["curExp"] / st["maxExp"])
     number_w.draw(408,98,st["curExp"],0.65)
     number_w.draw(465,98,st["maxExp"],0.65)
-    # gobj.draw_collision_box()
+
+    
+    ft.draw(480,94,m.name,(255,255,255))
+    life_gauge.draw(541,90,st2["curHp"] / st2["maxHp"])
+    number_w.draw(587,105,st2["curHp"],0.65)
+    number_w.draw(630,105,st2["maxHp"],0.65)
 
 def handle_event(e):
     # prev_dx = boy.dx

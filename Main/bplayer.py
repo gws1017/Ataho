@@ -7,7 +7,7 @@ from math import *
 
 SKILL_NAME = ["tigerfist","lightslash"]
 
-EFFECT_NAME = ["ready","punch","impossible","lightcollect"]
+EFFECT_NAME = ["ready","punch","impossible","lightcollect","hit"]
 
 IMAGE_SX = {
     SKILL_NAME[0] : [0,48,97,160,219,283],
@@ -48,6 +48,7 @@ class IdleState:
 
     def __init__(self):
         self.image = gfw.image.load(res('at_btl.png'))
+        self.image2 = gfw.image.load(res('at_victory.png'))
 
     def enter(self,st,st2): #각 스테이트에 진입(enter)될때마다 처리(초기화)해야하기 때문에 엔터 함수를 추가함
         self.st = st
@@ -55,20 +56,62 @@ class IdleState:
         self.time = 0 #타임 변수 추가
         self.fidx = 0
         self.action = 2
+        self.endtime = 0
+        
         self.wav = load_wav('./res/bgm/'+ EFFECT_NAME[2] +'.wav')
+        self.wav2 = [load_wav('./res/bgm/'+ EFFECT_NAME[4] +'.wav')]
+        
     def exit(self): #스테이트를 빠져 나갈때 할것
         pass
     def draw(self):
+
         width,height = 48,64
         sx = self.fidx * width
         sy = self.action * height
-        self.image.clip_draw(sx, sy, width, height, *self.player.pos)
+        if self.endtime > 0 :
+            print(self.fidx)
+            sx = self.fidx * width
+            self.image2.clip_draw(sx, 0, width, 64, *self.player.pos)
+        else : self.image.clip_draw(sx, sy, width, height, *self.player.pos)
 
-    def update(self):
-        self.time += gfw.delta_time # 업데이트 될때마다 시간을 더해줌 (객체가 생성된 이후로 흐른 시간)
-        # self.player.pos = point_add(self.player.pos, self.player.delta)
+    def update(self): 
+
+        if self.player.monster.dead == 1 and self.endtime == 0:
+            self.player.STATUS["curExp"] += self.player.monster.STATUS["curExp"]
+            self.endtime += gfw.delta_time*5
+        if self.endtime > 0 :
+            self.endtime += gfw.delta_time*5
+            self.fidx = int(self.endtime) % 6
+            if self.endtime >=2 and self.endtime < 2.1 :
+                self.player.bgm2.play(1)
+        if self.endtime > 25 :
+            return -1
+                        
+        if self.player.hit == 1 :
+            self.player.hit = 2
+            m=self.player.monster
+            dmg = m.STATUS["atk"] - self.player.STATUS["df"]
+            self.player.STATUS["curHp"] = self.player.STATUS["curHp"] - dmg
+            if self.player.STATUS["curHp"] < 0:
+                self.player.STATUS["curHp"] = 0
+            if self.player.STATUS["curHp"] == 0 :
+                self.player.set_state(DeadState)
+            if dmg == 0:
+                self.fidx = 2
+            else : self.fidx = 1
+        if self.player.hit == 2:
+            self.time += gfw.delta_time # 업데이트 될때마다 시간을 더해줌 (객체가 생성된 이후로 흐른 시간)
+            frame = self.time * 5
+            if frame < 3 and self.fidx == 1:
+                if frame >=0 and frame < 0.1:
+                    self.wav2[0].play(1)
+            else :
+                self.fidx = 0
+                self.player.hit = 0
+        
+
         move_obj(self.player)
-        return True
+        return False
         
 
     def handle_event(self, e):
@@ -87,6 +130,52 @@ class IdleState:
                         return
                     else : s["curMp"] = s["curMp"] - self.player.manaconsum[1]
             self.player.set_state(FireState)
+
+class DeadState:
+    @staticmethod
+    def get(player):
+        if not hasattr(DeadState, 'singleton'):  #싱글턴이라는 멤버를 가지고있냐?(hasattr함수/파이썬 기본함수) 없으면
+            DeadState.singleton = DeadState() #만들자
+            DeadState.singleton.player = player
+        return DeadState.singleton  #있으면 리턴
+
+    def __init__(self):
+        self.image = gfw.image.load(res('at_btl.png'))
+
+    def enter(self,st,st2): #각 스테이트에 진입(enter)될때마다 처리(초기화)해야하기 때문에 엔터 함수를 추가함
+        self.time = 0 #타임 변수 추가
+        self.fidx = 0
+        self.sx = [336,416,496]
+        self.width = [73,76,70]
+        self.action = 2
+
+        
+    def exit(self): #스테이트를 빠져 나갈때 할것
+        pass
+    def draw(self):
+        sx = self.sx[self.fidx]
+        width = self.width[self.fidx]
+        height = 58
+        x,y = self.player.pos
+        self.image.clip_draw(sx, 0, width, height, x - self.fidx * 0.9,y)
+
+    def update(self): 
+        self.time += gfw.delta_time # 업데이트 될때마다 시간을 더해줌 (객체가 생성된 이후로 흐른 시간)
+        frame = self.time * 8
+        print(self.time)
+        self.fidx = int(frame) % 3
+        if self.time > 10 :
+            return -1
+        else : return -2
+        
+
+        move_obj(self.player)
+        return False
+        
+
+    def handle_event(self, e):
+        pair = (e.type, e.key)
+        
 
 
 class FireState:
@@ -198,7 +287,6 @@ class FireState:
     def update(self):
         self.time += gfw.delta_time
         frame = self.time * 5
-        #print(frame)
         if self.st == 0 and self.st2 == 0:
             if frame < 2:
                 self.fidx = int(frame)
@@ -246,7 +334,7 @@ class FireState:
                 pass
             else:
                 self.player.set_state(IdleState)
-        return False
+        return True
 
     def handle_event(self, e):
         pass
@@ -278,7 +366,9 @@ class Player:
         self.state = None
         self.st = 0
         self.st2 = 0
-        self.name = gfw.font.load(RES_DIR + '/neodgm.ttf', 18)
+        self.hit = 0
+        self.dead = False
+        self.name = "아타호"
         self.set_state(IdleState)
         self.image = gfw.image.load(res('at_btl.png'))
         self.manaconsum = [7,12]
@@ -298,6 +388,14 @@ class Player:
             "df" : 17,
             "act" : 20,
         }
+        self.PLAYER_SINFO = {
+          (0,0) :  self.STATUS["atk"],
+          (1,0) :  self.STATUS["atk"]*(self.slevel["tigerfist"][0]*0.1+1),
+          (1,1) :  self.STATUS["atk"]*(self.slevel["lightslash"][0]*0.1+1),
+          (2,0) : 0,
+          (3,0) : 0,
+          (3,1) : 0
+        }
         
 
     def set_state(self, clazz):
@@ -311,6 +409,17 @@ class Player:
         self.state.draw()
 
     def update(self):
+        s = self.STATUS
+        if s["curExp"] == 100 :
+            s["maxHp"] +=  randint(2,5)
+            s["maxMp"] +=  randint(2,5)
+            s["atk"] += randint(2,5)
+            s["df"] += randint(2,5)
+            s["act"] += randint(2,5)
+            s["curExp"] = 0
+            s["curHp"] = s["maxHp"]
+            s["curMp"] = s["maxMp"]
+            s["lvl"] += 1
         return self.state.update()
 
     def fire(self):
