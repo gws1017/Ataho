@@ -3,9 +3,9 @@ import gobj
 from pico2d import *
 from bplayer import *
 from enemy import *
-
+from boss import *
 class BattleManager:
-    def __init__(self):
+    def __init__(self,be):
         #배틀 UI
         self.image = gfw.image.load(gobj.res('skillwindow.png'))
         self.select1 = gfw.image.load(gobj.res('select1.png'))
@@ -20,14 +20,19 @@ class BattleManager:
         self.spos2 = 225 - self.select2.w ,336 - self.select1.h
         self.wav = load_wav('./res/bgm/'+ EFFECT_NAME[2] +'.wav')
         self.DRAW = True
+        self.BE = be
         #플레이어 세팅 
         self.player = Player()
-        self.monster = Monster(0)
         self.stidx = 0
         self.st2idx = 0
         self.sname = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
+        if self.BE == 0 :
+            self.monster = Monster(0)
+        elif self.BE == 1:
+            self.monster = Boss()
         self.player.monster = self.monster
         self.monster.player = self.player
+        
 
         
 
@@ -35,8 +40,6 @@ class BattleManager:
     def draw(self):
         self.player.draw()
         self.monster.draw()
-        
-        
         if self.DRAW :
             self.image.clip_draw_to_origin(0, 0,223,352, *self.pos)
             pos1 = self.pos[0]+17, self.pos[1]
@@ -66,8 +69,9 @@ class BattleManager:
             return
 
         #서로 정보 갱신
-        self.player.monster = self.monster
         self.monster.player = self.player
+        self.player.monster = self.monster
+        
 
         
         x,y = self.spos

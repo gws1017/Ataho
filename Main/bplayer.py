@@ -57,7 +57,7 @@ class IdleState:
         self.fidx = 0
         self.action = 2
         self.endtime = 0
-        
+        self.h = 0
         self.wav = load_wav('./res/bgm/'+ EFFECT_NAME[2] +'.wav')
         self.wav2 = [load_wav('./res/bgm/'+ EFFECT_NAME[4] +'.wav')]
         
@@ -75,7 +75,7 @@ class IdleState:
         else : self.image.clip_draw(sx, sy, width, height, *self.player.pos)
 
     def update(self): 
-
+        dmg = 0
         if self.player.monster.dead == 1 and self.endtime == 0:
             self.player.STATUS["curExp"] += self.player.monster.STATUS["curExp"]
             self.endtime += gfw.delta_time*5
@@ -90,8 +90,25 @@ class IdleState:
         if self.player.hit == 1 :
             self.player.hit = 2
             m=self.player.monster
-            dmg = m.STATUS["atk"] - self.player.STATUS["df"]
-            self.player.STATUS["curHp"] = self.player.STATUS["curHp"] - dmg
+           
+            if hasattr(m,'skill') :
+                if m.skill == 1 :
+                    self.h += 1
+                    if self.h > 2 :
+                        self.player.hit = 2
+                    else : self.player.hit = 1
+                    dmg = m.STATUS["atk"]*0.5 - self.player.STATUS["df"]
+                    if dmg <= 0 : dmg = 0
+                elif m.skill == 2 :
+                    dmg = m.STATUS["atk"]*1.2 - self.player.STATUS["df"]
+                    if dmg <= 0 : dmg = 0
+
+            else : 
+                dmg = m.STATUS["atk"] - self.player.STATUS["df"]
+                if dmg <= 0 : dmg = 0
+
+
+            self.player.STATUS["curHp"] = int(self.player.STATUS["curHp"] - dmg)
             if self.player.STATUS["curHp"] < 0:
                 self.player.STATUS["curHp"] = 0
             if self.player.STATUS["curHp"] == 0 :

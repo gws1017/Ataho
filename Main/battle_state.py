@@ -25,7 +25,7 @@ def enter():
     gfw.world.add(gfw.layer.status, status)
 
     global bm
-    bm = BattleManager()
+    bm = BattleManager(1)
     bm.player.bgm2 = load_music('./res/bgm/victory.MID')
     gfw.world.add(gfw.layer.bm,bm)
 
@@ -43,12 +43,14 @@ def enter():
     life_gauge.load()
 
 
+
 def update():
     gfw.world.update()
 
 def draw():
     p = bm.player
     m = bm.monster
+
     st = p.STATUS
     st2 = m.STATUS
     gfw.world.draw()
