@@ -27,7 +27,7 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push(villiage_state)
+        gfw.push_data(villiage_state,None)
 def exit():
     global image
     

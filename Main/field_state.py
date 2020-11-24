@@ -7,8 +7,8 @@ from number import Number
 from map_obj import MapObject
 from random import randint
 import life_gauge
-
-def enter():
+import villiage_state
+def enter(data):
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
@@ -31,8 +31,7 @@ def enter():
     number_w = Number(3)
 
     global player
-    player = Player()
-    player.pos = bg.center
+    player = data
     player.bg = bg
     player.wcount = 0
     player.wmax = randint(40,80)
@@ -54,6 +53,11 @@ def enter():
 
 def update():
     gfw.world.update()
+    print()
+    x,y = player.pos
+    if x >= 1220 and x<=1260 :
+        player.pos = 80,236
+        gfw.change_data(villiage_state,player)
 
 def draw():
     gfw.world.draw()

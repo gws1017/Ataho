@@ -64,12 +64,26 @@ def change(state):
     stack.append(state)
     state.enter()
 
+def change_data(state,data):
+    global stack
+    if (len(stack) > 0):
+        stack.pop().exit()
+    stack.append(state)
+    state.enter(data)
+
 def push(state):
     global stack
     if (len(stack) > 0):
         stack[-1].pause()
     stack.append(state)
     state.enter()
+
+def push_data(state,data):
+    global stack
+    if (len(stack) > 0):
+        stack[-1].pause()
+    stack.append(state)
+    state.enter(data)
 
 def pop():
     global stack

@@ -6,9 +6,9 @@ from background import FixedBackground
 from number import Number
 from map_obj import MapObject
 import life_gauge
+import field_state
 
-
-def enter():
+def enter(data):
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
@@ -31,8 +31,12 @@ def enter():
     number_w = Number(3)
 
     global player
-    player = Player()
-    player.pos = bg.center
+    if data == None :
+        player = Player()
+        player.pos = bg.center
+    else : 
+        player = data
+        
     player.bg = bg
     if gfw.world.count_at(gfw.layer.mobj) > 0:
         player.map_obj = gfw.world.object(gfw.layer.mobj, 0)
@@ -52,6 +56,11 @@ def enter():
 
 def update():
     gfw.world.update()
+    print(player.pos)
+    x,y = player.bg.to_screen(player.pos)
+    if x >= 20 and x<=50 :
+        player.pos = 1200,236
+        gfw.change_data(field_state,player)
 
 def draw():
     gfw.world.draw()

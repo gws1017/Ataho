@@ -20,7 +20,7 @@ def enter():
     frame = FixedBackground('frame.png',1)
     gfw.world.add(gfw.layer.frame, frame)
 
-    status = FixedBackground('statusui.png',2)
+    status = FixedBackground('bt_statusui.png',2)
     status.tp = 2
     gfw.world.add(gfw.layer.status, status)
 
