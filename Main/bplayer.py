@@ -391,7 +391,7 @@ class Player:
         self.manaconsum = [7,12]
         self.slevel = {
         SKILL_NAME[0]: [1,0],
-        SKILL_NAME[1]: [4,0]
+        SKILL_NAME[1]: [1,0]
         }
         self.STATUS = {
             "lvl" : 1,

@@ -4,6 +4,7 @@ import gfw
 import gobj
 from random import randint
 
+SKILL_NAME = ["tigerfist","lightslash"]
 
 class Player:
     KEY_MAP = {
@@ -30,17 +31,24 @@ class Player:
         self.time = 0
         self.fidx = 0
         self.action = 2
+        self.wbool = False
         self.mag = 1
-        self.lvl = 1
-        self.curHp =15
-        self.curMp = 30
-        self.curExp = 0
-        self.maxHp = 30
-        self.maxMp = 30
-        self.maxExp = 100
-        self.atk = 22
-        self.df = 17
-        self.act = 20
+        self.slevel = {
+        SKILL_NAME[0]: [1,0],
+        SKILL_NAME[1]: [1,0]
+        }
+        self.STATUS = {
+            "lvl" : 1,
+            "curHp" : 30,
+            "curMp" : 30,
+            "curExp" : 0,
+            "maxHp" : 30,
+            "maxMp" : 30,
+            "maxExp" : 100,
+            "atk" : 22,
+            "df" : 17,
+            "act" : 20,
+        }
         self.name = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
             
 
@@ -71,15 +79,6 @@ class Player:
         self.image.clip_draw(sx, sy, width, 64, *pos)
 
     def update(self):       
-        if hasattr(self,'wcount'):
-            if self.wcount > self.wmax :
-                self.wcount = 0
-                import battle_state
-                gfw.push(battle_state)
-
-        
-
-
         
         x,y = self.pos
         tx,ty = self.pos
@@ -110,7 +109,8 @@ class Player:
             self.action = 2 if dx < 0 else 3
 
         
-        
+        if self.wbool :
+            self.wcount += 1
     
 
         if self.battle == 0 :  
@@ -135,9 +135,13 @@ class Player:
             if self.battle == 1 :
                 return
             else:
-                if(hasattr(self,'wcount')):
-                    self.wcount += 1
-                    #print(self.wcount)
+                if pair[1] == SDLK_DOWN or pair[1] == SDLK_UP or pair[1] == SDLK_LEFT or pair[1] == SDLK_RIGHT:    
+                    if hasattr(self,'wcount') and pair[0] == SDL_KEYDOWN:
+                        self.wbool = True
+                if pair[1] == SDLK_DOWN and pair[1] == SDLK_UP and pair[1] == SDLK_LEFT and pair[1] == SDLK_RIGHT:
+                    if pair[0] == SDL_KEYUP:
+                        self.wbool = False
+                        
                 if self.target is not None:
                     self.target = None
                     self.delta = 0, 0

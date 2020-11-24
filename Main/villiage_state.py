@@ -64,17 +64,18 @@ def update():
 
 def draw():
     gfw.world.draw()
+    stat = player.STATUS
     player.name.draw(40,87,'아타호',(255,255,255))
     mobj.name.draw(528,87,'마을',(255,255,255))
-    life_gauge.draw(174,84,player.curHp / player.maxHp)
-    number_w.draw(212,98,player.curHp,0.65)
-    number_w.draw(262,98,player.maxHp,0.65)
-    life_gauge.draw(272,84,player.curMp / player.maxMp)
-    number_w.draw(310,98,player.curMp,0.65)
-    number_w.draw(360,98,player.maxMp,0.65)
-    life_gauge.draw(370,84,player.curExp / player.maxExp)
-    number_w.draw(408,98,player.curExp,0.65)
-    number_w.draw(465,98,player.maxExp,0.65)
+    life_gauge.draw(174,84,stat["curHp"] / stat["maxHp"])
+    number_w.draw(212,98,stat["curHp"],0.65)
+    number_w.draw(262,98,stat["maxHp"],0.65)
+    life_gauge.draw(272,84,stat["curMp"] / stat["maxMp"])
+    number_w.draw(310,98,stat["curMp"],0.65)
+    number_w.draw(360,98,stat["maxMp"],0.65)
+    life_gauge.draw(370,84,stat["curExp"] / stat["maxExp"])
+    number_w.draw(408,98,stat["curExp"],0.65)
+    number_w.draw(465,98,stat["maxExp"],0.65)
     draw_collision_box()
     # gobj.draw_collision_box()
 

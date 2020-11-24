@@ -10,7 +10,7 @@ from battle_manage import BattleManager
 import life_gauge
 import gobj
 
-def enter():
+def enter(data):
     gfw.world.init(['bg', 'bm','frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
@@ -27,6 +27,7 @@ def enter():
     global bm
     bm = BattleManager(1)
     bm.player.bgm2 = load_music('./res/bgm/victory.MID')
+    bm.player.STATUS = data
     gfw.world.add(gfw.layer.bm,bm)
 
     global number_w

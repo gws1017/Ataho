@@ -8,6 +8,8 @@ from map_obj import MapObject
 from random import randint
 import life_gauge
 import villiage_state
+import battle_state
+
 def enter(data):
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
@@ -34,7 +36,7 @@ def enter(data):
     player = data
     player.bg = bg
     player.wcount = 0
-    player.wmax = randint(40,80)
+    player.wmax = randint(40,70)
     if gfw.world.count_at(gfw.layer.mobj) > 0:
         player.map_obj = gfw.world.object(gfw.layer.mobj, 0)
     bg.target = player
@@ -52,8 +54,15 @@ def enter(data):
 
 
 def update():
+
+    if hasattr(player,'wcount'):
+        print(player.wcount)
+     #   if player.wcount > player.wmax :
+      #      player.wcount = 0
+       #     gfw.change_data(battle_state,player.STATUS)
+
     gfw.world.update()
-    print()
+    
     x,y = player.pos
     if x >= 1220 and x<=1260 :
         player.pos = 80,236
@@ -61,17 +70,18 @@ def update():
 
 def draw():
     gfw.world.draw()
+    stat = player.STATUS
     player.name.draw(40,87,'아타호',(255,255,255))
     mobj.name.draw(528,87,'황야1',(255,255,255))
-    life_gauge.draw(174,84,player.curHp / player.maxHp)
-    number_w.draw(212,98,player.curHp,0.65)
-    number_w.draw(262,98,player.maxHp,0.65)
-    life_gauge.draw(272,84,player.curMp / player.maxMp)
-    number_w.draw(310,98,player.curMp,0.65)
-    number_w.draw(360,98,player.maxMp,0.65)
-    life_gauge.draw(370,84,player.curExp / player.maxExp)
-    number_w.draw(408,98,player.curExp,0.65)
-    number_w.draw(465,98,player.maxExp,0.65)
+    life_gauge.draw(174,84,stat["curHp"] / stat["maxHp"])
+    number_w.draw(212,98,stat["curHp"],0.65)
+    number_w.draw(262,98,stat["maxHp"],0.65)
+    life_gauge.draw(272,84,stat["curMp"] / stat["maxMp"])
+    number_w.draw(310,98,stat["curMp"],0.65)
+    number_w.draw(360,98,stat["maxMp"],0.65)
+    life_gauge.draw(370,84,stat["curExp"] / stat["maxExp"])
+    number_w.draw(408,98,stat["curExp"],0.65)
+    number_w.draw(465,98,stat["maxExp"],0.65)
     draw_collision_box()
     # gobj.draw_collision_box()
 
