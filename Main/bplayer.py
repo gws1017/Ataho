@@ -78,9 +78,10 @@ class IdleState:
         dmg = 0
         self.player = data
         self.player.monster = data.monster
-        if self.player.monster.dead == 1 and self.endtime == 0:
-            self.player.STATUS["curExp"] += self.player.monster.STATUS["curExp"]
-            self.endtime += gfw.delta_time*5
+        if self.player.isBoss == False:
+            if self.player.monster.dead == 1 and self.endtime == 0:
+                self.player.STATUS["curExp"] += self.player.monster.STATUS["curExp"]
+                self.endtime += gfw.delta_time*5
         if self.endtime > 0 :
             self.endtime += gfw.delta_time*5
 
@@ -89,7 +90,7 @@ class IdleState:
                 self.player.bgm2.play(1)
         if self.endtime > 55 :
             return -1
-                        
+        
         if self.player.hit == 1 :
             self.player.hit = 2
             m=self.player.monster
@@ -117,7 +118,7 @@ class IdleState:
                 self.player.STATUS["curHp"] = 0
             if self.player.STATUS["curHp"] == 0 :
                 self.player.set_state(DeadState)
-                return
+                return -10
             if dmg == 0:
                 self.fidx = 2
             else : self.fidx = 1
@@ -393,6 +394,7 @@ class Player:
         self.st2 = 0
         self.hit = 0
         self.dead = False
+        self.isBoss = False
         self.name = "아타호"
         self.set_state(IdleState)
         self.image = gfw.image.load(res('at_btl.png'))
@@ -422,7 +424,8 @@ class Player:
           (3,1) : 0
         }
 
-
+    def set_isBoss(self):
+        self.isBoss = True
     def set_state(self, clazz):
         if self.state != None:
             self.state.exit()

@@ -187,6 +187,7 @@ class Boss:
         self.targets = []
         self.speed = 0
         self.time = 0
+        self.isBoss = None
         self.st = 0
         self.st2 = 0
         self.monster = None
@@ -209,7 +210,10 @@ class Boss:
             "df" : 60,
             "act" : 15,
         }
-        
+
+    def set_isBoss(self):
+        pass
+
     def set_state(self, clazz):
         if self.state != None:
             self.state.exit()

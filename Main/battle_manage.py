@@ -33,6 +33,7 @@ class BattleManager:
         elif self.BE == 1:
             from boss import Boss
             self.monster = Boss()
+            self.player.set_isBoss()
         self.player.monster = self.monster
         self.monster.player = self.player
         
@@ -67,9 +68,11 @@ class BattleManager:
             pass
 
     def update(self):
-        if self.player.update() == -1 :
+        isreturn = self.player.update()
+        if isreturn == -1 :
             return -1
-        
+        elif isreturn == -10:
+            return -1
 
         #서로 정보 갱신
         self.monster.player = self.player
@@ -118,9 +121,12 @@ class BattleManager:
         if nb :
             self.player.hit = 1
             self.DRAW = True
-        if self.player.update() == -2 :
+        isreturn = self.player.update()
+        if isreturn == -2 :
             self.monster.set_state(IdleState)
             self.DRAW = False
+        elif isreturn == -10:
+            return -1
             
 
     def handle_event(self, e):

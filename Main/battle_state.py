@@ -16,7 +16,7 @@ import gobj
 # 맵정보를 딕셔너리로 저장
 
 def enter(data,tp,bt):
-    gfw.world.init(['bg', 'bm','frame', 'status'])
+    gfw.world.init(['bg','frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
     bg = Battleground('battle0.png',0)
@@ -41,7 +41,6 @@ def enter(data,tp,bt):
     bm.player.STATUS = p.STATUS
     bm.player.slevel = p.slevel
     bm.oplayer = data
-    gfw.world.add(gfw.layer.bm,bm)
 
     global number_w
     number_w = Number(3)   
@@ -66,7 +65,8 @@ def enter(data,tp,bt):
 
 def update():
     gfw.world.update()
-    if bm.update() == -1 :
+    isreturn = bm.update()
+    if isreturn == -1 :
         if bm.player.STATUS["curHp"] == 0 : bm.player.STATUS["curHp"] = 1 
         bm.oplayer.STATUS = bm.player.STATUS
         if bm.player.slevel['tigerfist'][1] >=10 :
@@ -85,7 +85,7 @@ def update():
             gfw.change_data(field_state,bm.oplayer)
         elif Map == 1:
             gfw.change_data(field_state2,bm.oplayer)
-    elif bm.update() == -3 :
+    elif isreturn == -3 :
             gfw.change_data(end_state,bm.oplayer)
 
 def draw():
@@ -94,9 +94,10 @@ def draw():
 
     st = p.STATUS
     st2 = m.STATUS
-    bm.draw()
-    gfw.world.draw()
     
+    gfw.world.draw()
+    bm.draw()
+
     ft.draw(40,87,p.name,(255,255,255))
     life_gauge.draw(174,84,st["curHp"] / st["maxHp"])
     number_w.draw(212,98,st["curHp"],0.65)
