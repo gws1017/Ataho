@@ -43,10 +43,11 @@ def enter(data):
     bg.target = player
     gfw.world.add(gfw.layer.player, player)
 
-    global bgm
+    global bgm,wav
     bgm = load_music('./res/bgm/villiage.MID')
     bgm.set_volume(50)
     bgm.repeat_play()
+    wav = load_wav('./res/bgm/회복.WAV')
 
     #global nm
     #nm = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
@@ -58,8 +59,9 @@ def update():
     gfw.world.update()
     print(player.pos)
     x,y = player.bg.to_screen(player.pos)
-    if x >= 20 and x<=50 :
+    if x >= 20 and x <=50 :
         player.pos = 1200,236
+        #player.pos = 217,990
         gfw.change_data(field_state,player)
 
 def draw():
@@ -88,14 +90,20 @@ def handle_event(e):
         if e.key == SDLK_ESCAPE:
             gfw.pop()
             return
+        if e.key == SDLK_SPACE:
+            x,y = player.pos
+            if x >= 625 and x <= 685:
+                if y >= 555 and y<= 610:
+                    player.STATUS["curHp"] = player.STATUS["maxHp"]
+                    player.STATUS["curMp"] = player.STATUS["maxMp"]
+                    wav.play(1)
 
     if player.handle_event(e):
         return
 def pause():
     pass
 def exit():
-    pass
-
+    gfw.world.clear()
 
 
 if __name__ == '__main__':
