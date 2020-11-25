@@ -20,7 +20,7 @@ class IdleState:
     def __init__(self):
         pass
 
-    def enter(self):
+    def enter(self,st,st2):
         self.time = 0
         self.fidx = 0
         self.hit = 0
@@ -68,7 +68,8 @@ class IdleState:
 
 
 
-    def update(self):
+    def update(self,data):
+        self.monster = data
         self.time +=  gfw.delta_time * 5
         if self.monster.STATUS["curHp"] == 0 : 
             self.deadtime += gfw.delta_time * 5
@@ -85,6 +86,8 @@ class IdleState:
         elif self.monster.DRAW == True: self.hit,self.time = 0,0
 
         if m.STATUS["curHp"] < 0 : m.STATUS["curHp"] = 0
+
+        if p.st == 3 and p.st2 == 1 : self.monster.set_state(FireState)
 
 
         return False
@@ -104,7 +107,7 @@ class FireState:
     def __init__(self):
         pass
 
-    def enter(self):
+    def enter(self,st,st2):
         self.time = 0
         self.fidx = 0
         self.image = self.monster.image
@@ -123,7 +126,8 @@ class FireState:
         x,y = self.monster.pos
         self.image.clip_draw(sx, 0, width, 64, x, y)
 
-    def update(self):
+    def update(self,data):
+        self.monster = data
         self.time += gfw.delta_time
         frame = self.time * 5
         
@@ -155,12 +159,15 @@ class Monster:
     def __init__(self,tp):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 500, 300
+        self.mob = None
         self.delta = 0, 0
         self.fidx = 0
         self.target = None
         self.targets = []
         self.speed = 0
         self.time = 0
+        self.st = 0
+        self.st2 = 0
         self.state = None
         self.type = tp
         self.DRAW = True
@@ -188,7 +195,7 @@ class Monster:
             "lvl" : 10,
             "curHp" : 65,
             "curMp" : 30,
-            "curExp" : 30,
+            "curExp" : 40,
             "maxHp" : 65,
             "maxMp" : 30,
             "maxExp" : 100,
@@ -202,14 +209,14 @@ class Monster:
         if self.state != None:
             self.state.exit()
         self.state = clazz.get(self)
-        self.state.enter()
+        self.state.enter(self.st,self.st2)
 
     def draw(self):
         self.state.draw()
 
     def update(self,D):
         self.DRAW = D
-        return self.state.update()
+        return self.state.update(self)
 
     def fire(self):
         self.time = 0

@@ -1,7 +1,7 @@
 import gfw
 from pico2d import *
 import villiage_state
-
+import field_state2
 canvas_width = 640
 canvas_height = 480
 
@@ -28,9 +28,10 @@ def handle_event(e):
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
         gfw.push_data(villiage_state,None)
+        #gfw.push_data(field_state2,None)
 def exit():
     global image
-    
+    bgm.stop()
     del image
 
 def pause():

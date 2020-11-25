@@ -2,10 +2,10 @@ import gfw
 import gobj
 from pico2d import *
 from bplayer import *
-from enemy import *
-from boss import *
+
+
 class BattleManager:
-    def __init__(self,be):
+    def __init__(self,be,tp):
         #배틀 UI
         self.image = gfw.image.load(gobj.res('skillwindow.png'))
         self.select1 = gfw.image.load(gobj.res('select1.png'))
@@ -15,6 +15,7 @@ class BattleManager:
                       [gfw.image.load(gobj.res('run.png')),gfw.image.load(gobj.res('defense.png'))] ]
 
 
+        self.next = True
         self.pos = 200,128
         self.spos = 217 + self.select1.w // 2,409 - self.select1.h
         self.spos2 = 225 - self.select2.w ,336 - self.select1.h
@@ -27,8 +28,10 @@ class BattleManager:
         self.st2idx = 0
         self.sname = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
         if self.BE == 0 :
-            self.monster = Monster(0)
+            from enemy import Monster
+            self.monster = Monster(tp)
         elif self.BE == 1:
+            from boss import Boss
             self.monster = Boss()
         self.player.monster = self.monster
         self.monster.player = self.player
@@ -65,8 +68,8 @@ class BattleManager:
 
     def update(self):
         if self.player.update() == -1 :
-            gfw.pop()
-            return
+            return -1
+        
 
         #서로 정보 갱신
         self.monster.player = self.player
@@ -107,7 +110,12 @@ class BattleManager:
         self.spos2 =  self.spos2[0], y
         
         self.player.update()
-        if self.monster.update(self.DRAW) :
+        self.monster.player = self.player
+        self.player.monster = self.monster
+        nb = self.monster.update(self.DRAW)
+        if nb == -3 :
+            return -3
+        if nb :
             self.player.hit = 1
             self.DRAW = True
         if self.player.update() == -2 :
@@ -116,6 +124,7 @@ class BattleManager:
             
 
     def handle_event(self, e):
+        
         if e.type == SDL_KEYDOWN :
             self.stidx += \
                     -1 if e.key == SDLK_LEFT else \
@@ -124,14 +133,34 @@ class BattleManager:
                     -1 if e.key == SDLK_DOWN else \
                     1 if e.key == SDLK_UP else 0
             if e.key == SDLK_SPACE :
+                if self.stidx == 3 and self.st2idx == 1:
+                    self.wav.play(1)
+                    return
                 if self.stidx != 2:
                     self.DRAW = False
                     self.player.st,self.player.st2 = self.stidx,self.st2idx
+                    if self.player.st == 1:
+                        s = self.player.STATUS
+                        if self.player.st2 == 0:
+                            if s["curMp"] >= self.player.manaconsum[0] :
+                                self.player.slevel["tigerfist"][1] += 1
+                            else:
+                                self.wav.play(1)
+                                self.DRAW = True
+                                return
+                        elif self.player.st2 == 1:
+                            if s["curMp"] >= self.player.manaconsum[1] :
+                                self.player.slevel["lightslash"][1] += 1
+                            else:
+                                self.wav.play(1)
+                                self.DRAW = True
+                                return
                 else: 
                     self.wav.play(1)
                     return
         self.player.handle_event(e)
-        self.monster.handle_event(e)           
+        self.monster.handle_event(e) 
+                  
 
     def get_bb(self):
     	pass

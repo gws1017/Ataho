@@ -7,16 +7,15 @@ from number import Number
 from map_obj import MapObject
 from random import randint
 import life_gauge
-import villiage_state
+import field_state
 import battle_state
-import field_state2
 
 def enter(data):
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
     global bg
-    bg = FixedBackground('Map1.png',0)
+    bg = FixedBackground('Map2.png',0)
     gfw.world.add(gfw.layer.bg, bg)
 
     frame = FixedBackground('frame.png',1)
@@ -27,7 +26,7 @@ def enter(data):
     gfw.world.add(gfw.layer.status, status)
 
     global mobj
-    mobj = MapObject(1)
+    mobj = MapObject(2)
     mobj.bg = bg
     gfw.world.add(gfw.layer.mobj,mobj)
 
@@ -38,17 +37,20 @@ def enter(data):
     if data != None : player = data
     else : 
         player = Player()
+        player.pos = 264,213
     player.bg = bg
     player.wcount = 0
     player.wbool = False
-    player.wmax = randint(50,80)
+    player.wmax = randint(70,80)
     if gfw.world.count_at(gfw.layer.mobj) > 0:
         player.map_obj = gfw.world.object(gfw.layer.mobj, 0)
     bg.target = player
     gfw.world.add(gfw.layer.player, player)
 
+    
+
     global bgm
-    bgm = load_music('./res/bgm/field.MID')
+    bgm = load_music('./res/bgm/field2.MID')
     bgm.set_volume(50)
     bgm.repeat_play()
 
@@ -59,21 +61,19 @@ def enter(data):
 
 
 def update():
+    #print(player.pos)
     if hasattr(player,'wcount'):
         if player.wcount > player.wmax :
             player.wcount = 0
-            gfw.change_bt(battle_state,player,0,0)
+            gfw.change_bt(battle_state,player,1,0)
 
     gfw.world.update()
-    print(player.pos)
+
     x,y = player.pos
-    if x >= 1220 and x<=1260 :
-        player.pos = 80,236
-        gfw.change_data(villiage_state,player)
-    if y >= 1050 and player.STATUS["lvl"] >= 10:
-        player.pos = 264,213
-        gfw.change_data(field_state2,player)
-        
+    if y <= 177:
+        player.pos = 218,1000
+        gfw.change_data(field_state,player)
+
 
 def draw():
     gfw.world.draw()
@@ -101,6 +101,13 @@ def handle_event(e):
         if e.key == SDLK_ESCAPE:
             gfw.pop()
             return
+        if e.key == SDLK_SPACE:
+            x,y = player.pos
+            print(x,y,"앙기모띠")
+            if y >= 944 and y <= 974:
+                if x <= 645 and x >= 630:
+                    gfw.change_bt(battle_state,player,1,1)
+                    return
 
     if player.handle_event(e):
         return

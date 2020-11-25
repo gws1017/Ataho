@@ -60,6 +60,7 @@ class IdleState:
         self.h = 0
         self.wav = load_wav('./res/bgm/'+ EFFECT_NAME[2] +'.wav')
         self.wav2 = [load_wav('./res/bgm/'+ EFFECT_NAME[4] +'.wav')]
+
         
     def exit(self): #스테이트를 빠져 나갈때 할것
         pass
@@ -69,37 +70,39 @@ class IdleState:
         sx = self.fidx * width
         sy = self.action * height
         if self.endtime > 0 :
-            print(self.fidx)
             sx = self.fidx * width
             self.image2.clip_draw(sx, 0, width, 64, *self.player.pos)
         else : self.image.clip_draw(sx, sy, width, height, *self.player.pos)
 
-    def update(self): 
+    def update(self,data): 
         dmg = 0
+        self.player = data
+        self.player.monster = data.monster
         if self.player.monster.dead == 1 and self.endtime == 0:
             self.player.STATUS["curExp"] += self.player.monster.STATUS["curExp"]
             self.endtime += gfw.delta_time*5
         if self.endtime > 0 :
             self.endtime += gfw.delta_time*5
+
             self.fidx = int(self.endtime) % 6
             if self.endtime >=2 and self.endtime < 2.1 :
                 self.player.bgm2.play(1)
-        if self.endtime > 25 :
+        if self.endtime > 55 :
             return -1
                         
         if self.player.hit == 1 :
             self.player.hit = 2
             m=self.player.monster
-           
+            
             if hasattr(m,'skill') :
-                if m.skill == 1 :
+                if m.skill == 0 :
                     self.h += 1
                     if self.h > 2 :
                         self.player.hit = 2
                     else : self.player.hit = 1
                     dmg = m.STATUS["atk"]*0.5 - self.player.STATUS["df"]
                     if dmg <= 0 : dmg = 0
-                elif m.skill == 2 :
+                elif m.skill == 1 :
                     dmg = m.STATUS["atk"]*1.2 - self.player.STATUS["df"]
                     if dmg <= 0 : dmg = 0
 
@@ -108,15 +111,18 @@ class IdleState:
                 if dmg <= 0 : dmg = 0
 
 
+            if self.st == 3 and self.st2 == 1: dmg = 0
             self.player.STATUS["curHp"] = int(self.player.STATUS["curHp"] - dmg)
             if self.player.STATUS["curHp"] < 0:
                 self.player.STATUS["curHp"] = 0
             if self.player.STATUS["curHp"] == 0 :
                 self.player.set_state(DeadState)
+                return
             if dmg == 0:
                 self.fidx = 2
             else : self.fidx = 1
         if self.player.hit == 2:
+
             self.time += gfw.delta_time # 업데이트 될때마다 시간을 더해줌 (객체가 생성된 이후로 흐른 시간)
             frame = self.time * 5
             if frame < 3 and self.fidx == 1:
@@ -139,7 +145,7 @@ class IdleState:
                 if self.player.st2 == 0:
                     if s["curMp"] < self.player.manaconsum[0] :
                         self.wav.play(1)
-                        return
+                        return 
                     else : s["curMp"] = s["curMp"] - self.player.manaconsum[0]
                 elif self.player.st2 == 1:
                     if s["curMp"] < self.player.manaconsum[1] :
@@ -176,10 +182,10 @@ class DeadState:
         x,y = self.player.pos
         self.image.clip_draw(sx, 0, width, height, x - self.fidx * 0.9,y)
 
-    def update(self): 
+    def update(self,data): 
+        self.player = data
         self.time += gfw.delta_time # 업데이트 될때마다 시간을 더해줌 (객체가 생성된 이후로 흐른 시간)
         frame = self.time * 8
-        print(self.time)
         self.fidx = int(frame) % 3
         if self.time > 10 :
             return -1
@@ -296,12 +302,12 @@ class FireState:
             width = 48
             sx = self.fidx * width
             sy = self.action * height
-            self.image.clip_draw(sx, sy, width, height, x, y)
-            
+            self.image.clip_draw(sx, sy, width, height, x, y)            
 
         
 
-    def update(self):
+    def update(self,data):
+        self.player = data
         self.time += gfw.delta_time
         frame = self.time * 5
         if self.st == 0 and self.st2 == 0:
@@ -323,7 +329,8 @@ class FireState:
             else:
                 self.player.set_state(IdleState)
         elif self.st == 1 and self.st2 == 1:
-            if frame < 35:
+
+            if frame < 70:
                 if frame < 20 :
                     self.fidx = 0
                     
@@ -334,7 +341,7 @@ class FireState:
                         if self.r[i] > 0 : self.r[i] = self.r[i] -0.5
                         if self.angle[i] > 0 : self.angle[i] = self.angle[i] -0.5
                     if frame >= 0 and frame < 0.1 : self.WAV_LIST["lightcollect"][0].play(1)
-                elif frame >= 20 and frame < 35 :
+                elif frame >= 20 and frame < 70 :
                     if frame >= 20 and frame < 20.1 : self.WAV_LIST["lightslash"][0].play(1)
                     self.fidx = 1
             else:
@@ -375,6 +382,7 @@ class Player:
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 130, 300
         self.delta = 0, 0
+        self.pler = None
         self.fidx = 0
         self.target = None
         self.targets = []
@@ -408,12 +416,12 @@ class Player:
         self.PLAYER_SINFO = {
           (0,0) :  self.STATUS["atk"],
           (1,0) :  self.STATUS["atk"]*(self.slevel["tigerfist"][0]*0.1+1),
-          (1,1) :  self.STATUS["atk"]*(self.slevel["lightslash"][0]*0.1+1),
+          (1,1) :  self.STATUS["atk"]*(self.slevel["lightslash"][0]*0.1+1)*1.2,
           (2,0) : 0,
           (3,0) : 0,
           (3,1) : 0
         }
-        
+
 
     def set_state(self, clazz):
         if self.state != None:
@@ -437,7 +445,7 @@ class Player:
             s["curHp"] = s["maxHp"]
             s["curMp"] = s["maxMp"]
             s["lvl"] += 1
-        return self.state.update()
+        return self.state.update(self)
 
     def fire(self):
         self.time = 0

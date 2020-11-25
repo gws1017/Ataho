@@ -20,7 +20,7 @@ class IdleState:
     def __init__(self):
         pass
 
-    def enter(self):
+    def enter(self,st,st2):
         self.time = 0
         self.fidx = 0
         self.hit = 0
@@ -64,13 +64,14 @@ class IdleState:
 
 
 
-
-    def update(self):
+    def update(self,data):
+        self.Boss = data
         self.time +=  gfw.delta_time * 5
         if self.Boss.STATUS["curHp"] == 0 : 
             self.deadtime += gfw.delta_time * 5
         if self.deadtime > 10 : 
             self.Boss.dead = True
+            return -3
         p = self.Boss.player
         m = self.Boss
         if self.Boss.DRAW == False and self.hit == 0:
@@ -103,34 +104,35 @@ class FireState:
     def __init__(self):
         pass
 
-    def enter(self):
+    def enter(self,st,st2):
         self.time = 0
         self.fidx = 0
         self.fidx2 = 0
+        self.Boss.skill = random.randint(0,1)
         self.image = self.Boss.image
         self.fog = gfw.image.load(res('fog.png'))
-        self.Boss.skill = random.randint(1,2)
         self.sx = [[468,0,90,170,271,350,448],[118,171,235,315,395]]
         self.width = [[48,90,80,101,79,98,96],[53,64,80,80,54]]
         self.height = [[96,87,87,87,87,87,87],[95,95,95,95,95]]  
         self.action = [[304,210,210,210,210,210,210],[304,304,304,304,304]]
         self.fsx = [0,46,92,138,189]
         self.fwidth = [46,46,46,51,44]
-        
+
 
     def exit(self):
         pass
     def draw(self):
-        sx = self.sx[self.Boss.skill-1][self.fidx]
-        sy = self.action[self.Boss.skill-1][self.fidx]
-        width = self.width[self.Boss.skill-1][self.fidx]
-        height = self.height[self.Boss.skill-1][self.fidx]
+        print(self.Boss.skill,self.fidx)
+        sx = self.sx[self.Boss.skill][self.fidx]
+        sy = self.action[self.Boss.skill][self.fidx]
+        width = self.width[self.Boss.skill][self.fidx]
+        height = self.height[self.Boss.skill][self.fidx]
         x,y = self.Boss.pos
         self.image.clip_draw(sx, sy, width, height, x, y)
         sx = self.fsx[self.fidx2]
         width = self.fwidth[self.fidx2]
         x,y = self.Boss.player.pos
-        if self.Boss.skill == 2:
+        if self.Boss.skill == 1:
             self.fog.clip_draw(sx, 0, width, 27, x-15, y-20)
             self.fog.clip_draw(sx, 0, width, 27, x, y-20)
             self.fog.clip_draw(sx, 0, width, 27, x+15, y-20)
@@ -141,14 +143,14 @@ class FireState:
             self.fog.clip_draw(sx, 0, width, 27, x, y+7)
             self.fog.clip_draw(sx, 0, width, 27, x+15, y+7)
 
-    def update(self):
+    def update(self,data):
         self.time += gfw.delta_time
         frame = self.time * 5
         frame2 = self.time * 10
 
-        if self.Boss.skill == 2:
-            mf =5
-        else : mf = 7
+        if self.Boss.skill == 0:
+            mf =7
+        else : mf = 5
 
         if frame < mf:
             self.fidx = int(frame)
@@ -185,6 +187,9 @@ class Boss:
         self.targets = []
         self.speed = 0
         self.time = 0
+        self.st = 0
+        self.st2 = 0
+        self.monster = None
         self.state = None
         self.DRAW = True
         self.dead = False
@@ -209,14 +214,15 @@ class Boss:
         if self.state != None:
             self.state.exit()
         self.state = clazz.get(self)
-        self.state.enter()
+        
+        self.state.enter(self.st,self.st2)
 
     def draw(self):
         self.state.draw()
 
     def update(self,D):
         self.DRAW = D
-        return self.state.update()
+        return self.state.update(self)
 
     def fire(self):
         self.time = 0

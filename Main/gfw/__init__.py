@@ -70,6 +70,12 @@ def change_data(state,data):
         stack.pop().exit()
     stack.append(state)
     state.enter(data)
+def change_bt(state,data,tp,bt):
+    global stack
+    if (len(stack) > 0):
+        stack.pop().exit()
+    stack.append(state)
+    state.enter(data,tp,bt)
 
 def push(state):
     global stack
@@ -84,6 +90,12 @@ def push_data(state,data):
         stack[-1].pause()
     stack.append(state)
     state.enter(data)
+def push_bt(state,data,tp):
+    global stack
+    if (len(stack) > 0):
+        stack[-1].pause()
+    stack.append(state)
+    state.enter(data,tp)
 
 def pop():
     global stack

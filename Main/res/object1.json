@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"object1.json"
+         "target":"object2.json"
         }
     },
  "height":60,
@@ -22,7 +22,7 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":5,
+ "nextlayerid":8,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",

@@ -39,14 +39,14 @@ class Player:
         }
         self.STATUS = {
             "lvl" : 1,
-            "curHp" : 30,
-            "curMp" : 30,
+            "curHp" : 10,
+            "curMp" : 10,
             "curExp" : 0,
             "maxHp" : 30,
             "maxMp" : 30,
             "maxExp" : 100,
-            "atk" : 22,
-            "df" : 17,
+            "atk" : 22, #22
+            "df" : 17, #17
             "act" : 20,
         }
         self.name = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
@@ -88,7 +88,7 @@ class Player:
         y += dy * self.speed * self.mag * gfw.delta_time
 
         bg_l, bg_b, bg_r, bg_t = self.bg.get_boundary()
-        #print(self.bg.get_boundary())
+
         x = clamp(bg_l, x, bg_r)
         y = clamp(bg_b, y, bg_t)
         
@@ -135,13 +135,21 @@ class Player:
             if self.battle == 1 :
                 return
             else:
-                if pair[1] == SDLK_DOWN or pair[1] == SDLK_UP or pair[1] == SDLK_LEFT or pair[1] == SDLK_RIGHT:    
-                    if hasattr(self,'wcount') and pair[0] == SDL_KEYDOWN:
-                        self.wbool = True
-                if pair[1] == SDLK_DOWN and pair[1] == SDLK_UP and pair[1] == SDLK_LEFT and pair[1] == SDLK_RIGHT:
+                if pair[1] == SDLK_DOWN :
                     if pair[0] == SDL_KEYUP:
                         self.wbool = False
-                        
+                if pair[1] == SDLK_UP:
+                    if pair[0] == SDL_KEYUP:
+                        self.wbool = False
+                if pair[1] == SDLK_LEFT:
+                    if pair[0] == SDL_KEYUP:
+                        self.wbool = False      
+                if pair[1] == SDLK_RIGHT:
+                    if pair[0] == SDL_KEYUP:
+                        self.wbool = False  
+                if pair[1] == SDLK_DOWN or pair[1] == SDLK_UP or pair[1] == SDLK_LEFT or pair[1] == SDLK_RIGHT:    
+                    if hasattr(self,'wcount') and pair[0] == SDL_KEYDOWN:
+                        self.wbool = True      
                 if self.target is not None:
                     self.target = None
                     self.delta = 0, 0

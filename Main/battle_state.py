@@ -7,10 +7,15 @@ from number import Number
 from map_obj import MapObject
 from random import randint
 from battle_manage import BattleManager
+import end_state
+import field_state
+import field_state2
 import life_gauge
 import gobj
 
-def enter(data):
+# 맵정보를 딕셔너리로 저장
+
+def enter(data,tp,bt):
     gfw.world.init(['bg', 'bm','frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
@@ -24,17 +29,31 @@ def enter(data):
     status.tp = 2
     gfw.world.add(gfw.layer.status, status)
 
+    global Map
+    Map = tp
+
+    global p
+    p = data
+
     global bm
-    bm = BattleManager(1)
+    bm = BattleManager(bt,tp)
     bm.player.bgm2 = load_music('./res/bgm/victory.MID')
-    bm.player.STATUS = data
+    bm.player.STATUS = p.STATUS
+    bm.player.slevel = p.slevel
+    bm.oplayer = data
     gfw.world.add(gfw.layer.bm,bm)
 
     global number_w
     number_w = Number(3)   
 
     global bgm
-    bgm = load_music('./res/bgm/battle0.MID')
+    if bt == 0:
+        if tp == 0:
+            bgm = load_music('./res/bgm/battle0.MID')
+        if tp == 1:
+            bgm = load_music('./res/bgm/battle1.MID')
+    elif bt == 1:
+        bgm = load_music('./res/bgm/보스1.MID')
     bgm.set_volume(50)
     bgm.repeat_play()
     
@@ -47,6 +66,27 @@ def enter(data):
 
 def update():
     gfw.world.update()
+    if bm.update() == -1 :
+        if bm.player.STATUS["curHp"] == 0 : bm.player.STATUS["curHp"] = 1 
+        bm.oplayer.STATUS = bm.player.STATUS
+        if bm.player.slevel['tigerfist'][1] >=10 :
+            bm.player.slevel['tigerfist'][1] = 0
+            bm.player.slevel['tigerfist'][0] += 1
+        if bm.player.slevel['lightslash'][1] >=10 :
+            bm.player.slevel['lightslash'][1] = 0
+            bm.player.slevel['lightslash'][0] += 1
+        print(bm.player.slevel['lightslash'][0],bm.player.slevel['lightslash'][1])
+        bm.oplayer.slevel = bm.player.slevel
+        print(bm.oplayer.slevel['lightslash'][0],bm.oplayer.slevel['lightslash'][1])
+        bm.oplayer.wcount = 0
+        bm.oplayer.wmax = randint(50,80)
+        bm.oplayer.delta = 0,0 
+        if Map == 0:  
+            gfw.change_data(field_state,bm.oplayer)
+        elif Map == 1:
+            gfw.change_data(field_state2,bm.oplayer)
+    elif bm.update() == -3 :
+            gfw.change_data(end_state,bm.oplayer)
 
 def draw():
     p = bm.player
@@ -54,7 +94,9 @@ def draw():
 
     st = p.STATUS
     st2 = m.STATUS
+    bm.draw()
     gfw.world.draw()
+    
     ft.draw(40,87,p.name,(255,255,255))
     life_gauge.draw(174,84,st["curHp"] / st["maxHp"])
     number_w.draw(212,98,st["curHp"],0.65)
@@ -87,7 +129,7 @@ def handle_event(e):
 def pause():
     pass
 def exit():
-    pass
+    gfw.world.clear()
 
 
 
