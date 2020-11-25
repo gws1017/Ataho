@@ -23,7 +23,7 @@ Dan = {
   (280)  : "13단 전설의 맹호",
 }
 
-def enter():
+def enter(data):
    global image, bgm
    image = load_image('./res/ed.png')
    bgm = load_music('./res/bgm/end.MID')
@@ -31,7 +31,7 @@ def enter():
    bgm.repeat_play()
 
    global player
-   player = Player()#data
+   player = data
 
    global font ,font2
    font = gfw.font.load (gobj.RES_DIR + '/neodgm.ttf', 25)
@@ -73,6 +73,7 @@ def draw():
     elif sums >= 230 and sums <= 250 : sums = 220
 
     font.draw(100,177+25,'단수 : ' ,(255,255,255))
+    if sums >= 280 : sums = 280
     font.draw(200,177+25,Dan[sums] ,(255,255,255))
     if sums == 40 : font.draw(100,152+25,'최하위 단수네요 이 점수 나오기도 힘든데?' ,(255,255,255))
 

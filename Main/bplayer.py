@@ -432,11 +432,11 @@ class Player:
 
     def update(self):
         s = self.STATUS
-        if s["curExp"] == 100 :
+        if s["curExp"] >= 100 :
             s["maxHp"] +=  randint(2,5)
             s["maxMp"] +=  randint(2,5)
             s["atk"] += randint(2,5)
-            s["df"] += randint(2,5)
+            s["df"] += randint(1,3)
             s["act"] += randint(2,5)
             s["curExp"] = 0
             s["curHp"] = s["maxHp"]

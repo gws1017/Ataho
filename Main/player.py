@@ -46,7 +46,7 @@ class Player:
             "maxMp" : 30,
             "maxExp" : 100,
             "atk" : 22, #22
-            "df" : 17, #17
+            "df" : 10, #17
             "act" : 20,
         }
         self.PLAYER_SINFO = {
