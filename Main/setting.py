@@ -66,7 +66,6 @@ def exit():
 
 def save():
     data = player.__getstate__()
-    print(data)
     with open('save.sav','wb') as f:
         pickle.dump(data,f)
 

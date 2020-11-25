@@ -59,7 +59,10 @@ class IdleState:
                     if self.time > 10 :
                         self.Boss.image.clip_draw(sx, 304, width2, 96, *self.Boss.pos)
                     elif self.time <= 10 : self.Boss.image.clip_draw(0, 304, width, 96, *self.Boss.pos)
+                elif p.st == 3 and p.st2 == 1  : 
+                    self.Boss.image.clip_draw(0, 304, width, 96, *self.Boss.pos)
                 if self.time > stop and self.deadtime == 0 :
+                    if p.st == 3 and p.st2 == 0: return
                     self.Boss.set_state(FireState)
 
 
@@ -122,7 +125,6 @@ class FireState:
     def exit(self):
         pass
     def draw(self):
-        print(self.Boss.skill,self.fidx)
         sx = self.sx[self.Boss.skill][self.fidx]
         sy = self.action[self.Boss.skill][self.fidx]
         width = self.width[self.Boss.skill][self.fidx]

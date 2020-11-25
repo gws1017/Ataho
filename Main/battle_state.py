@@ -8,6 +8,7 @@ from map_obj import MapObject
 from random import randint
 from battle_manage import BattleManager
 import end_state
+import villiage_state
 import field_state
 import field_state2
 import life_gauge
@@ -15,7 +16,7 @@ import gobj
 
 # 맵정보를 딕셔너리로 저장
 
-def enter(data,tp,bt):
+def enter(data,bt,tp):
     gfw.world.init(['bg','frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
@@ -92,10 +93,15 @@ def update():
         die_time += gfw.delta_time
         if die_time > 3:
             final_up()
-            if Map == 0:  
-                gfw.change_data(field_state,bm.oplayer)
-            elif Map == 1:
-                gfw.change_data(field_state2,bm.oplayer)
+            
+            if bm.BE == 1 :
+                bm.oplayer.pos = 320,240
+                gfw.change_data(villiage_state,bm.oplayer)
+            else :
+                if Map == 0:  
+                    gfw.change_data(field_state,bm.oplayer)
+                elif Map == 1:
+                    gfw.change_data(field_state2,bm.oplayer)
     if isreturn == -1 :
         final_up()
         if Map == 0:  

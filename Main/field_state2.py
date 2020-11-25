@@ -63,7 +63,7 @@ def update():
     if hasattr(player,'wcount'):
         if player.wcount > player.wmax :
             player.wcount = 0
-            gfw.change_bt(battle_state,player,1,0)
+            gfw.change_bt(battle_state,player,0,1)
 
     gfw.world.update()
 
@@ -99,7 +99,6 @@ def handle_event(e):
             return
         if e.key == SDLK_SPACE:
             x,y = player.pos
-            print(x,y,"앙기모띠")
             if y >= 944 and y <= 974:
                 if x <= 645 and x >= 630:
                     gfw.change_bt(battle_state,player,1,1)

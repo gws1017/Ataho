@@ -19,8 +19,16 @@ class IdleState:
 
     def __init__(self):
         pass
+    def reset(self,mon):
+        self.monster = mon
 
     def enter(self,st,st2):
+        if self.monster.type == 0 :
+            self.sx = 115
+            self.width = (37,37)
+        elif self.monster.type == 1:
+            self.sx = 131
+            self.width = (56,69)
         self.time = 0
         self.fidx = 0
         self.hit = 0
@@ -29,18 +37,16 @@ class IdleState:
         self.stoptime = {
          (0,0) : 5,
          (1,0) : 10,
-         (1,1) : 18,   
+         (1,1) : 18,
+         (3,0) : 0,
+         (3,1) : 5,  
         }
-        if self.monster.type == 0 :
-            self.sx = 115
-            self.width = (37,37)
-        elif self.monster.type == 1:
-            self.sx = 131
-            self.width = (56,69)
+        
         
 
     def exit(self):
         pass
+
     def draw(self):
 
         p = self.monster.player
@@ -62,7 +68,10 @@ class IdleState:
                     if self.time > 10 :
                         self.monster.image.clip_draw(sx, 0, width2, 64, *self.monster.pos)
                     elif self.time <= 10 : self.monster.image.clip_draw(0, 0, width, 64, *self.monster.pos)
+                elif p.st == 3 and p.st2 == 1  :  
+                    self.monster.image.clip_draw(0, 0, width, 64, *self.monster.pos)
                 if self.time > stop and self.deadtime == 0 :
+                    if p.st == 3 and p.st2 == 0: return
                     self.monster.set_state(FireState)
 
 
@@ -78,7 +87,7 @@ class IdleState:
         p = self.monster.player
         m = self.monster
         if self.monster.DRAW == False and self.hit == 0:
-            if p.st != 3 : self.hit += 1
+            self.hit += 1
             dmg = p.PLAYER_SINFO[(p.st,p.st2)] - m.STATUS["df"]
             if int(dmg) < 0 : dmg = 0
             m.STATUS["curHp"] = m.STATUS["curHp"] - int(dmg)
@@ -86,9 +95,6 @@ class IdleState:
         elif self.monster.DRAW == True: self.hit,self.time = 0,0
 
         if m.STATUS["curHp"] < 0 : m.STATUS["curHp"] = 0
-
-        if p.st == 3 and p.st2 == 1 : self.monster.set_state(FireState)
-
 
         return False
 
@@ -106,6 +112,9 @@ class FireState:
 
     def __init__(self):
         pass
+
+    def reset(self,mon):
+        self.monster = mon
 
     def enter(self,st,st2):
         self.time = 0
@@ -215,6 +224,7 @@ class Monster:
         self.state.draw()
 
     def update(self,D):
+        self.state.reset(self)
         self.DRAW = D
         return self.state.update(self)
 

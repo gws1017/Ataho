@@ -37,7 +37,6 @@ def enter(data):
         player.pos = bg.center
     else : 
         player = data
-        
     player.bg = bg
     if gfw.world.count_at(gfw.layer.mobj) > 0:
         player.map_obj = gfw.world.object(gfw.layer.mobj, 0)

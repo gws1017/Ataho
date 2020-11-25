@@ -39,8 +39,8 @@ class Player:
         }
         self.STATUS = {
             "lvl" : 1,
-            "curHp" : 10,
-            "curMp" : 10,
+            "curHp" : 30,
+            "curMp" : 30,
             "curExp" : 0,
             "maxHp" : 30,
             "maxMp" : 30,

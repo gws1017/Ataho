@@ -113,16 +113,14 @@ class BattleManager:
         self.spos = x, self.spos[1]
         self.spos2 =  self.spos2[0], y
         
-        self.player.update()
-        self.monster.player = self.player
-        self.player.monster = self.monster
+       
         nb = self.monster.update(self.DRAW)
         if nb == -3 :
             return -3
         if nb :
             self.player.hit = 1
             self.DRAW = True
-        isreturn = self.player.update()
+        #isreturn = self.player.update()
         if isreturn == -2 :
             self.monster.set_state(IdleState)
             self.DRAW = False
@@ -141,9 +139,9 @@ class BattleManager:
                     -1 if e.key == SDLK_DOWN else \
                     1 if e.key == SDLK_UP else 0
             if e.key == SDLK_SPACE :
-                if self.stidx == 3 and self.st2idx == 1:
-                    self.wav.play(1)
-                    return
+                # if self.stidx == 3 and self.st2idx == 1:
+                #     self.wav.play(1)
+                #     return
                 if self.stidx != 2:
                     self.DRAW = False
                     self.player.st,self.player.st2 = self.stidx,self.st2idx
