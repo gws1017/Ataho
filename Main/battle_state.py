@@ -61,32 +61,54 @@ def enter(data,tp,bt):
 
     life_gauge.load()
 
+    global die_time,flag_die
+    die_time = 0
+    flag_die = False
 
+def final_up():
+    if bm.player.STATUS["curHp"] == 0 : bm.player.STATUS["curHp"] = 1 
+    bm.oplayer.STATUS = bm.player.STATUS
+
+    if bm.player.slevel['tigerfist'][1] >=10 :
+        bm.player.slevel['tigerfist'][1] = 0
+        bm.player.slevel['tigerfist'][0] += 1
+    if bm.player.slevel['lightslash'][1] >=10 :
+        bm.player.slevel['lightslash'][1] = 0
+        bm.player.slevel['lightslash'][0] += 1
+    bm.oplayer.slevel = bm.player.slevel
+
+    bm.oplayer.wcount = 0
+    bm.oplayer.wmax = randint(50,80)
+    bm.oplayer.delta = 0,0 
 
 def update():
+    global die_time,flag_die
     gfw.world.update()
-    isreturn = bm.update()
+    isreturn = 0
+    if flag_die == False:
+        isreturn = bm.update()
+    else:
+        bm.player.update()
+        die_time += gfw.delta_time
+        if die_time > 3:
+            final_up()
+            if Map == 0:  
+                gfw.change_data(field_state,bm.oplayer)
+            elif Map == 1:
+                gfw.change_data(field_state2,bm.oplayer)
     if isreturn == -1 :
-        if bm.player.STATUS["curHp"] == 0 : bm.player.STATUS["curHp"] = 1 
-        bm.oplayer.STATUS = bm.player.STATUS
-        if bm.player.slevel['tigerfist'][1] >=10 :
-            bm.player.slevel['tigerfist'][1] = 0
-            bm.player.slevel['tigerfist'][0] += 1
-        if bm.player.slevel['lightslash'][1] >=10 :
-            bm.player.slevel['lightslash'][1] = 0
-            bm.player.slevel['lightslash'][0] += 1
-        print(bm.player.slevel['lightslash'][0],bm.player.slevel['lightslash'][1])
-        bm.oplayer.slevel = bm.player.slevel
-        print(bm.oplayer.slevel['lightslash'][0],bm.oplayer.slevel['lightslash'][1])
-        bm.oplayer.wcount = 0
-        bm.oplayer.wmax = randint(50,80)
-        bm.oplayer.delta = 0,0 
+        final_up()
         if Map == 0:  
             gfw.change_data(field_state,bm.oplayer)
         elif Map == 1:
             gfw.change_data(field_state2,bm.oplayer)
     elif isreturn == -3 :
-            gfw.change_data(end_state,bm.oplayer)
+        gfw.change_data(end_state,bm.oplayer)
+    elif isreturn == -10:
+        flag_die = True
+
+
+
 
 def draw():
     p = bm.player

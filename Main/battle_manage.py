@@ -72,7 +72,8 @@ class BattleManager:
         if isreturn == -1 :
             return -1
         elif isreturn == -10:
-            return -1
+            self.DRAW = False
+            return -10
 
         #서로 정보 갱신
         self.monster.player = self.player
@@ -126,7 +127,8 @@ class BattleManager:
             self.monster.set_state(IdleState)
             self.DRAW = False
         elif isreturn == -10:
-            return -1
+            self.DRAW = False
+            return -10
             
 
     def handle_event(self, e):
