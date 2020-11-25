@@ -416,26 +416,7 @@ class Player:
         SKILL_NAME[0]: [1,0],
         SKILL_NAME[1]: [1,0]
         }
-        self.STATUS = {
-            "lvl" : 1,
-            "curHp" : 30,
-            "curMp" : 30,
-            "curExp" : 0,
-            "maxHp" : 30,
-            "maxMp" : 30,
-            "maxExp" : 100,
-            "atk" : 22,
-            "df" : 17,
-            "act" : 20,
-        }
-        self.PLAYER_SINFO = {
-          (0,0) :  self.STATUS["atk"],
-          (1,0) :  self.STATUS["atk"]*(self.slevel["tigerfist"][0]*0.1+1),
-          (1,1) :  self.STATUS["atk"]*(self.slevel["lightslash"][0]*0.1+1)*1.2,
-          (2,0) : 0,
-          (3,0) : 0,
-          (3,1) : 0
-        }
+        
 
     def set_isBoss(self):
         self.isBoss = True

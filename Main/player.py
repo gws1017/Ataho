@@ -49,6 +49,14 @@ class Player:
             "df" : 17, #17
             "act" : 20,
         }
+        self.PLAYER_SINFO = {
+          (0,0) :  self.STATUS["atk"],
+          (1,0) :  self.STATUS["atk"]*(self.slevel["tigerfist"][0]*0.1+1),
+          (1,1) :  self.STATUS["atk"]*(self.slevel["lightslash"][0]*0.1+1)*1.2,
+          (2,0) : 0,
+          (3,0) : 0,
+          (3,1) : 0
+        }
         self.name = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)
             
 

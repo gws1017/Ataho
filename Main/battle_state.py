@@ -41,6 +41,7 @@ def enter(data,bt,tp):
     bm.player.bgm2 = load_music('./res/bgm/victory.MID')
     bm.player.STATUS = p.STATUS
     bm.player.slevel = p.slevel
+    bm.player.PLAYER_SINFO = p.PLAYER_SINFO
     bm.oplayer = data
 
     global number_w
@@ -68,7 +69,16 @@ def enter(data,bt,tp):
 
 def final_up():
     if bm.player.STATUS["curHp"] == 0 : bm.player.STATUS["curHp"] = 1 
+    bm.player.PLAYER_SINFO = {
+          (0,0) :  bm.player.STATUS["atk"],
+          (1,0) :  bm.player.STATUS["atk"]*(bm.player.slevel["tigerfist"][0]*0.1+1),
+          (1,1) :  bm.player.STATUS["atk"]*(bm.player.slevel["lightslash"][0]*0.1+1)*1.2,
+          (2,0) : 0,
+          (3,0) : 0,
+          (3,1) : 0
+        }
     bm.oplayer.STATUS = bm.player.STATUS
+    bm.oplayer.PLAYER_SINFO = bm.player.PLAYER_SINFO
 
     if bm.player.slevel['tigerfist'][1] >=10 :
         bm.player.slevel['tigerfist'][1] = 0
