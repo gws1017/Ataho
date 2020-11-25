@@ -1,7 +1,9 @@
 import gfw
+import pickle
 from pico2d import *
 import villiage_state
 import field_state2
+from player import Player
 canvas_width = 640
 canvas_height = 480
 
@@ -27,13 +29,32 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.quit()
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_SPACE):
-        gfw.push_data(villiage_state,None)
-        #gfw.push_data(field_state2,None)
+        load()
+        if data == None:
+          gfw.change_data(villiage_state,None)
+        else :
+          gfw.change_data(villiage_state,player)
+
 def exit():
     global image
     bgm.stop()
     del image
 
+def load():
+    global data, player
+    data = None
+    try:
+        f = open('save.sav', "rb")
+        data = pickle.load(f)
+        f.close()
+        player = Player()
+        player.__setstate__(data)
+    except:
+        print("No highscore file")
+        data = None
+        return
+ 
+    
 def pause():
     pass
 def resume():

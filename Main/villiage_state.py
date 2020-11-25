@@ -7,6 +7,7 @@ from number import Number
 from map_obj import MapObject
 import life_gauge
 import field_state
+import setting
 
 def enter(data):
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
@@ -49,19 +50,14 @@ def enter(data):
     bgm.repeat_play()
     wav = load_wav('./res/bgm/회복.WAV')
 
-    #global nm
-    #nm = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
-
     life_gauge.load()
 
 
 def update():
     gfw.world.update()
-    print(player.pos)
     x,y = player.bg.to_screen(player.pos)
     if x >= 20 and x <=50 :
         player.pos = 1200,236
-        #player.pos = 217,990
         gfw.change_data(field_state,player)
 
 def draw():
@@ -78,17 +74,16 @@ def draw():
     life_gauge.draw(370,84,stat["curExp"] / stat["maxExp"])
     number_w.draw(408,98,stat["curExp"],0.65)
     number_w.draw(465,98,stat["maxExp"],0.65)
-    draw_collision_box()
-    # gobj.draw_collision_box()
+    
 
 def handle_event(e):
-    # prev_dx = boy.dx
     if e.type == SDL_QUIT:
         gfw.quit()
         return
     elif e.type == SDL_KEYDOWN:
         if e.key == SDLK_ESCAPE:
-            gfw.pop()
+            bgm.stop()
+            gfw.push_data(setting,player)
             return
         if e.key == SDLK_SPACE:
             x,y = player.pos
@@ -102,6 +97,7 @@ def handle_event(e):
         return
 def pause():
     pass
+
 def exit():
     gfw.world.clear()
 

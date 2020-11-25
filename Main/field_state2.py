@@ -54,14 +54,12 @@ def enter(data):
     bgm.set_volume(50)
     bgm.repeat_play()
 
-    #global nm
-    #nm = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
+
 
     life_gauge.load()
 
 
 def update():
-    #print(player.pos)
     if hasattr(player,'wcount'):
         if player.wcount > player.wmax :
             player.wcount = 0
@@ -89,11 +87,9 @@ def draw():
     life_gauge.draw(370,84,stat["curExp"] / stat["maxExp"])
     number_w.draw(408,98,stat["curExp"],0.65)
     number_w.draw(465,98,stat["maxExp"],0.65)
-    draw_collision_box()
-    # gobj.draw_collision_box()
+
 
 def handle_event(e):
-    # prev_dx = boy.dx
     if e.type == SDL_QUIT:
         gfw.quit()
         return

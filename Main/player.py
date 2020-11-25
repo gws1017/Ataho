@@ -175,9 +175,13 @@ class Player:
     def __getstate__(self):
         dict = self.__dict__.copy()
         del dict['image']
+        del dict['name']
+        del dict['bg']
+        del dict['map_obj']
         return dict
 
     def __setstate__(self, dict):
         # self.__init__()
         self.__dict__.update(dict)
         self.image = gfw.image.load(gobj.RES_DIR + '/at_usual.png')
+        self.name = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 18)

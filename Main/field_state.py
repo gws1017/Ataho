@@ -52,8 +52,6 @@ def enter(data):
     bgm.set_volume(50)
     bgm.repeat_play()
 
-    #global nm
-    #nm = gfw.font.load(gobj.RES_DIR + '/neodgm.ttf', 20)
 
     life_gauge.load()
 
@@ -65,12 +63,11 @@ def update():
             gfw.change_bt(battle_state,player,0,0)
 
     gfw.world.update()
-    print(player.pos)
     x,y = player.pos
     if x >= 1220 and x<=1260 :
         player.pos = 80,236
         gfw.change_data(villiage_state,player)
-    if y >= 1050 and player.STATUS["lvl"] >= 10:
+    if y >= 1050 :#and player.STATUS["lvl"] >= 10:
         player.pos = 264,213
         gfw.change_data(field_state2,player)
         
@@ -89,11 +86,9 @@ def draw():
     life_gauge.draw(370,84,stat["curExp"] / stat["maxExp"])
     number_w.draw(408,98,stat["curExp"],0.65)
     number_w.draw(465,98,stat["maxExp"],0.65)
-    draw_collision_box()
-    # gobj.draw_collision_box()
 
 def handle_event(e):
-    # prev_dx = boy.dx
+
     if e.type == SDL_QUIT:
         gfw.quit()
         return

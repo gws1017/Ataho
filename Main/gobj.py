@@ -25,7 +25,6 @@ def collides_box(a, b,tpe):
     if tpe == 0 :
         for i in range(b.mcount) :
             (lb, bb, rb, tb) = b.get_bb(i)
-            #print((la, ba, ra, ta),(lb, bb, rb, tb),la > rb,ra < lb,ba > tb,ta < bb)
             if la > rb: continue
             if ra < lb: continue
             if ba > tb: continue
@@ -36,7 +35,7 @@ def collides_box(a, b,tpe):
     else :
         (lb, bb, rb, tb) = b.get_bb()
   
-    #print((la, ba, ra, ta),(lb, bb, rb, tb))
+
 
 
     if la > rb: return False
