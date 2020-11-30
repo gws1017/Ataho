@@ -83,8 +83,12 @@ class IdleState:
         self.player.monster = data.monster
         if self.player.isBoss == False:
             if self.player.monster.dead == 1 and self.endtime == 0:
-                self.player.STATUS["curExp"] += self.player.monster.STATUS["curExp"]
                 self.endtime += gfw.delta_time*5
+                if self.player.expup == True: 
+                    self.player.expup = False
+                    print(self.endtime)
+                    self.player.STATUS["curExp"] += self.player.monster.STATUS["curExp"]
+                
         if self.endtime > 0 :
             self.endtime += gfw.delta_time*10
 
@@ -107,7 +111,7 @@ class IdleState:
                     if self.h > 2 :
                         self.player.hit = 2
                     else : self.player.hit = 1
-                    dmg = m.STATUS["atk"]*0.5 - self.player.STATUS["df"]
+                    dmg = m.STATUS["atk"]*0.68 - self.player.STATUS["df"]
                     if dmg <= 0 : dmg = 0
                 elif m.skill == 1 :
                     dmg = m.STATUS["atk"]*1.2 - self.player.STATUS["df"]
@@ -406,6 +410,7 @@ class Player:
         self.st = 0
         self.st2 = 0
         self.hit = 0
+        self.expup = True
         self.dead = False
         self.isBoss = False
         self.name = "아타호"
@@ -432,16 +437,16 @@ class Player:
 
     def update(self):
         s = self.STATUS
-        if s["curExp"] >= 100 :
-            s["maxHp"] +=  randint(2,5)
-            s["maxMp"] +=  randint(2,5)
-            s["atk"] += randint(2,5)
-            s["df"] += randint(1,3)
-            s["act"] += randint(2,5)
-            s["curExp"] = 0
-            s["curHp"] = s["maxHp"]
-            s["curMp"] = s["maxMp"]
-            s["lvl"] += 1
+        if s["curExp"] >= 100:
+                s["maxHp"] +=  randint(2,5)
+                s["maxMp"] +=  randint(2,5)
+                s["atk"] += randint(2,5)
+                s["df"] += randint(1,3)
+                s["act"] += randint(2,5)
+                s["curExp"] = 0
+                s["curHp"] = s["maxHp"]
+                s["curMp"] = s["maxMp"]
+                s["lvl"] += 1
         return self.state.update(self)
 
     def fire(self):

@@ -29,7 +29,9 @@ class IdleState:
         self.stoptime = {
          (0,0) : 5,
          (1,0) : 10,
-         (1,1) : 18,   
+         (1,1) : 18,
+         (3,0) : 0,
+         (3,1) : 5,   
         }
         self.sx = 0
         self.width = (48,54)
@@ -78,9 +80,8 @@ class IdleState:
         p = self.Boss.player
         m = self.Boss
         if self.Boss.DRAW == False and self.hit == 0:
-            if p.st != 3 : 
-                self.hit += 1
-                self.fidx += 1
+            self.hit += 1
+            self.fidx += 1
             dmg = p.PLAYER_SINFO[(p.st,p.st2)] - m.STATUS["df"]
             if int(dmg) < 0 : dmg = 0
             m.STATUS["curHp"] = m.STATUS["curHp"] - int(dmg)
@@ -201,15 +202,15 @@ class Boss:
         self.name = "보스"
         self.skill = 0
         self.STATUS = {
-            "lvl" : 1,
+            "lvl" : 5,
             "curHp" : 100,
             "curMp" : 30,
             "curExp" : 10,
             "maxHp" : 100,
             "maxMp" : 30,
             "maxExp" : 100,
-            "atk" : 50,
-            "df" : 60,
+            "atk" : 40,
+            "df" : 25,
             "act" : 15,
         }
 

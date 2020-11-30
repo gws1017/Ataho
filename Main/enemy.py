@@ -201,15 +201,15 @@ class Monster:
             self.image = gfw.image.load(res('skeleton.png') )
             self.name = "해골"
             self.STATUS = {
-            "lvl" : 10,
+            "lvl" : 3,
             "curHp" : 65,
             "curMp" : 30,
             "curExp" : 40,
             "maxHp" : 65,
             "maxMp" : 30,
             "maxExp" : 100,
-            "atk" : 48,
-            "df" : 53,
+            "atk" : 30,
+            "df" : 18,
             "act" : 15,
         }
         
