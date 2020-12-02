@@ -86,7 +86,6 @@ class IdleState:
                 self.endtime += gfw.delta_time*5
                 if self.player.expup == True: 
                     self.player.expup = False
-                    print(self.endtime)
                     self.player.STATUS["curExp"] += self.player.monster.STATUS["curExp"]
                 
         if self.endtime > 0 :
@@ -399,8 +398,8 @@ class Player:
     def __init__(self):
         # self.pos = get_canvas_width() // 2, get_canvas_height() // 2
         self.pos = 130, 300
-        self.delta = 0, 0
         self.pler = None
+        self.delta = 0,0
         self.fidx = 0
         self.target = None
         self.targets = []

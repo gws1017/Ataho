@@ -60,15 +60,17 @@ def enter(data):
 
 
 def update():
+    global player
     if hasattr(player,'wcount'):
         if player.wcount > player.wmax :
             player.wcount = 0
             gfw.change_bt(battle_state,player,0,1)
 
     gfw.world.update()
+    
 
     x,y = player.pos
-    if y <= 177:
+    if y < 180:
         player.pos = 218,1000
         gfw.change_data(field_state,player)
 

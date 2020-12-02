@@ -35,7 +35,8 @@ def enter(data):
     number_w = Number(3)
 
     global player
-    if data != None : player = data
+    if data != None :
+        player = data
     else : 
         player = Player()
     player.bg = bg
@@ -88,7 +89,8 @@ def draw():
     number_w.draw(465,98,stat["maxExp"],0.65)
 
 def handle_event(e):
-
+    if player.handle_event(e):
+        pass
     if e.type == SDL_QUIT:
         gfw.quit()
         return
@@ -97,8 +99,7 @@ def handle_event(e):
             gfw.pop()
             return
 
-    if player.handle_event(e):
-        return
+   
 def pause():
     pass
 def exit():

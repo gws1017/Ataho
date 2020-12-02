@@ -147,6 +147,7 @@ class FireState:
             self.fog.clip_draw(sx, 0, width, 27, x+15, y+7)
 
     def update(self,data):
+        self.Boss = data
         self.time += gfw.delta_time
         frame = self.time * 5
         frame2 = self.time * 10
@@ -210,7 +211,7 @@ class Boss:
             "maxMp" : 30,
             "maxExp" : 100,
             "atk" : 40,
-            "df" : 25,
+            "df" : 20,
             "act" : 15,
         }
 

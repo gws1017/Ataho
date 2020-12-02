@@ -87,10 +87,9 @@ def final_up():
         bm.player.slevel['lightslash'][1] = 0
         bm.player.slevel['lightslash'][0] += 1
     bm.oplayer.slevel = bm.player.slevel
-
+    bm.oplayer.delta = 0,0
     bm.oplayer.wcount = 0
     bm.oplayer.wmax = randint(50,80)
-    bm.oplayer.delta = 0,0 
 
 def update():
     global die_time,flag_die
@@ -103,12 +102,11 @@ def update():
         die_time += gfw.delta_time
         if die_time > 3:
             final_up()
-            
             if bm.BE == 1 :
                 bm.oplayer.pos = 320,240
                 gfw.change_data(villiage_state,bm.oplayer)
             else :
-                if Map == 0:  
+                if Map == 0: 
                     gfw.change_data(field_state,bm.oplayer)
                 elif Map == 1:
                     gfw.change_data(field_state2,bm.oplayer)
@@ -155,6 +153,8 @@ def draw():
 
 def handle_event(e):
     # prev_dx = boy.dx
+    if bm.handle_event(e):
+        pass
     if e.type == SDL_QUIT:
         gfw.quit()
         return
@@ -163,8 +163,7 @@ def handle_event(e):
             gfw.pop()
             return
 
-    if bm.handle_event(e):
-        return
+   
 def pause():
     pass
 def exit():

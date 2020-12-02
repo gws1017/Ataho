@@ -209,7 +209,7 @@ class Monster:
             "maxMp" : 30,
             "maxExp" : 100,
             "atk" : 30,
-            "df" : 18,
+            "df" : 16,
             "act" : 15,
         }
         
