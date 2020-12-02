@@ -87,9 +87,10 @@ def handle_event(e):
     elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
         gfw.quit()
 def exit():
-    global image
+    global image,bgm
     bgm.stop()
     del image
+    del bgm
 
 def pause():
     pass

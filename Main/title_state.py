@@ -36,9 +36,10 @@ def handle_event(e):
           gfw.change_data(villiage_state,player)
 
 def exit():
-    global image
+    global image, bgm
     bgm.stop()
     del image
+    del bgm
 
 def load():
     global data, player

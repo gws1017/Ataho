@@ -61,8 +61,10 @@ def handle_event(e):
 
 
 def exit():
-    global image
+    global image, selector ,wav
+    del selector
     del image
+    del wav
 
 def save():
     data = player.__getstate__()

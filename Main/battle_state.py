@@ -167,6 +167,8 @@ def handle_event(e):
 def pause():
     pass
 def exit():
+    global bgm
+    del bgm
     gfw.world.clear()
 
 
