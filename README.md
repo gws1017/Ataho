@@ -193,8 +193,11 @@
     
 12.  유튜브 발표 링크
 
-    1차발표 링크: https://youtu.be/XfIGZP0iRCk
+    1차발표 링크:https://youtu.be/XfIGZP0iRCk
 
-    2차발표 링크:https://youtu.be/N8pIwM1eQCk
+    2차발표 링크: https://youtu.be/N8pIwM1eQCk
 
     3차발표 링크:https://youtu.be/MPg4Pkzm6mE
+    
+    
+
