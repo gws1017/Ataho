@@ -6,11 +6,11 @@
    <ul>"컴파일"에서 만든 게임 , RPG장르</ul>
    <ul>1997년에 출시한 고전 게임이다.</ul>
 
-   ![image-20230825200446563](C:\Users\gws10\AppData\Roaming\Typora\typora-user-images\image-20230825200446563.png)
+   ![image](https://github.com/gws1017/2DGP_Term/assets/65538479/458a7e38-401a-4abe-8028-fcc7e15d7435)
 
-   ![image-20230825200353076](C:\Users\gws10\AppData\Roaming\Typora\typora-user-images\image-20230825200353076.png)
+   ![image](https://github.com/gws1017/2DGP_Term/assets/65538479/8f14e754-9dc7-417b-ae5a-6d92a58092ab)
 
-   ![image-20230825200410270](C:\Users\gws10\AppData\Roaming\Typora\typora-user-images\image-20230825200410270.png)
+   ![image](https://github.com/gws1017/2DGP_Term/assets/65538479/a29cfe57-6dfa-4260-a3f2-88726412fcb7)
 
    
 
@@ -98,7 +98,7 @@
 
    ###### 1. 마을
 
-   ![image-20230825193508883](C:\Users\gws10\AppData\Roaming\Typora\typora-user-images\image-20230825193508883.png)![image-20230825193614621](C:\Users\gws10\AppData\Roaming\Typora\typora-user-images\image-20230825193614621.png)
+   ![image](https://github.com/gws1017/2DGP_Term/assets/65538479/171931d5-da78-4dc4-8b89-69ae5160e41d)!![image](https://github.com/gws1017/2DGP_Term/assets/65538479/ac1c1421-6d0f-45bc-9416-792f7e54df82)
 
    게임은 마을에서 시작합니다. 
 
@@ -108,7 +108,7 @@
 
    ######  2.전투
 
-   ![image-20230825194327718](C:\Users\gws10\AppData\Roaming\Typora\typora-user-images\image-20230825194327718.png)
+   ![image](https://github.com/gws1017/2DGP_Term/assets/65538479/2f8296c4-e3f1-4f67-96e9-34b5a1c34375)
 
    왼쪽이 **필드**가 되고 오른쪽이 **전투 화면**입니다.
 
@@ -122,7 +122,7 @@
 
    ###### 	3.보스
 
-   ![image-20230825194709907](C:\Users\gws10\AppData\Roaming\Typora\typora-user-images\image-20230825194709907.png)
+   ![image](https://github.com/gws1017/2DGP_Term/assets/65538479/b14d416f-4dba-47fe-a6bd-0ee49166e701)
 
    **보스**는 마지막필드에 위치해있으며 언제든지 도전이 가능하고 상호작용 시 전투 화면으로 넘어가게됩니다.
 
