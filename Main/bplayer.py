@@ -59,9 +59,9 @@ class IdleState:
         self.endtime = 0
         self.h = 0
         self.wav = load_wav('./res/bgm/'+ EFFECT_NAME[2] +'.wav')
-        self.wav2 = [load_wav('./res/bgm/'+ EFFECT_NAME[4] +'.wav'),
-                    load_wav('./res/bgm/'+ EFFECT_NAME[5] +'.wav'),
-                    load_wav('./res/bgm/'+ EFFECT_NAME[6] +'.wav'),
+        self.wav2 = [load_wav('./res/bgm/'+ EFFECT_NAME[4] +'.wav'), #hit
+                    load_wav('./res/bgm/'+ EFFECT_NAME[5] +'.wav'), #miss
+                    load_wav('./res/bgm/'+ EFFECT_NAME[6] +'.wav'), #defense
                     ]
 
         
@@ -121,16 +121,20 @@ class IdleState:
                 if dmg <= 0 : dmg = 0
 
 
-            if self.st == 3 and self.st2 == 1: dmg = 0
+            if self.st == 3 and self.st2 == 1: 
+                dmg = 0
+
             self.player.STATUS["curHp"] = int(self.player.STATUS["curHp"] - dmg)
+
             if frame < 3 : 
                 if frame >=0 and frame < 1:
                     if dmg <= 0 :
                         if self.st == 3 and self.st2 == 1:
-                            self.wav2[2].play(1)
+                            self.wav2[2].play(1) #defense
                         else :
-                            self.wav2[1].play(1)
-                    else : self.wav2[0].play(1)
+                            self.wav2[1].play(1) #miss
+                    else : self.wav2[0].play(1) #hit
+
             if self.player.STATUS["curHp"] < 0:
                 self.player.STATUS["curHp"] = 0
                 
@@ -243,6 +247,7 @@ class FireState:
          EFFECT_NAME[0] : [load_wav('./res/bgm/'+ EFFECT_NAME[0] +'.wav')],#팔 휘적거리는소리
          EFFECT_NAME[1] : [load_wav('./res/bgm/'+ EFFECT_NAME[1] +'.wav')],#펀치 소리
          EFFECT_NAME[3] : [load_wav('./res/bgm/'+ EFFECT_NAME[3] +'.wav')],#에너지 모으는 소리
+         EFFECT_NAME[4] : [load_wav('./res/bgm/'+ EFFECT_NAME[4] +'.wav')],#타격음
          }
 
     def enter(self,st,st2):
@@ -339,7 +344,10 @@ class FireState:
                 self.fidx = int(frame)
                 if frame >= 2 and frame < 2.2 : self.WAV_LIST["ready"][0].play(3)
             elif frame >=6 and frame < 15 :
-                if frame >= 6 and frame < 6.2 : self.WAV_LIST["tigerfist"][0].play(1)
+                if frame >= 6 and frame < 6.2 : 
+                    self.WAV_LIST["tigerfist"][0].play(1)
+                if frame >= 6.2 and frame < 6.4 : 
+                    self.WAV_LIST["hit"][0].play(1)
                 point = frame - int(frame)
                 if  frame >=10 and point >= 0 and point <= 0.5:
                     self.winkle = True
@@ -359,7 +367,10 @@ class FireState:
                         if self.angle[i] > 0 : self.angle[i] = self.angle[i] -0.5 *2
                     if frame >= 0 and frame < 0.2 : self.WAV_LIST["lightcollect"][0].play(1)
                 elif frame >= 20 and frame < 35 :
-                    if frame >= 20 and frame < 20.2 : self.WAV_LIST["lightslash"][0].play(1)
+                    if frame >= 20 and frame < 20.2 : 
+                        self.WAV_LIST["lightslash"][0].play(1)
+                    if frame >= 20.2 and frame < 20.4 : 
+                        self.WAV_LIST["hit"][0].play(1)
                     self.fidx = 1
             else:
                 self.player.set_state(IdleState)
