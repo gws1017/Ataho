@@ -53,6 +53,7 @@ class IdleState:
         sx = self.sx
         width = self.width[0]
         width2 = self.width[1]
+        
         if self.monster.dead == False :
             if self.hit == 0:
                 self.monster.image.clip_draw(0, 0, width, 64, *self.monster.pos)
@@ -181,7 +182,6 @@ class Monster:
         self.type = tp
         self.DRAW = True
         self.dead = False
-        self.set_state(IdleState)
         if tp == 0 :
             self.image = gfw.image.load(res('monkey.png') )
             self.name = "원숭이"
@@ -212,12 +212,14 @@ class Monster:
             "df" : 16,
             "act" : 15,
         }
+        self.set_state(IdleState)
         
 
     def set_state(self, clazz):
         if self.state != None:
             self.state.exit()
         self.state = clazz.get(self)
+        self.state.monster = self
         self.state.enter(self.st,self.st2)
 
     def draw(self):

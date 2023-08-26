@@ -10,7 +10,7 @@ import life_gauge
 import field_state
 import battle_state
 
-def enter(data):
+def enter(data = None):
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
@@ -79,7 +79,7 @@ def draw():
     gfw.world.draw()
     stat = player.STATUS
     player.name.draw(40,87,'아타호',(255,255,255))
-    mobj.name.draw(528,87,'황야1',(255,255,255))
+    mobj.name.draw(528,87,'황야2',(255,255,255))
     life_gauge.draw(174,84,stat["curHp"] / stat["maxHp"])
     number_w.draw(212,98,stat["curHp"],0.65)
     number_w.draw(262,98,stat["maxHp"],0.65)

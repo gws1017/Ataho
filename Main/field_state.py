@@ -11,7 +11,7 @@ import villiage_state
 import battle_state
 import field_state2
 
-def enter(data):
+def enter(data = None):
     gfw.world.init(['bg','mobj','player', 'frame', 'status'])
 
     center = get_canvas_width() // 2, get_canvas_height() // 2
@@ -43,6 +43,12 @@ def enter(data):
     player.wcount = 0
     player.wbool = False
     player.wmax = randint(50,80)
+
+    if(data == None) :
+        x,y = player.pos
+        y +=50
+        player.pos = x,y
+    
     if gfw.world.count_at(gfw.layer.mobj) > 0:
         player.map_obj = gfw.world.object(gfw.layer.mobj, 0)
     bg.target = player
